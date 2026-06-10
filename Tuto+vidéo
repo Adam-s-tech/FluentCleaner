@@ -1,0 +1,49 @@
+# FluentCleaner – Formation complète (20 mts) + https://www.youtube.com/watch?v=yi6PDkiIaEY
+
+## 🎯 Objectif
+Comprendre, installer, utiliser et automatiser FluentCleaner pour un nettoyage Windows efficace et maîtrisé
+
+---
+
+# 1. Introduction (5 min)
+
+## Contexte
+- CCleaner est devenu lourd, opaque et orienté business
+- FluentCleaner propose une alternative moderne, simple et transparente
+- Basé sur des règles communautaires (winapp2.ini)
+
+## Positionnement
+- Open source
+- WinUI 3 (interface moderne)
+- Nettoyage basé sur signatures (lisible et contrôlable)
+
+---
+
+# 2. Installation (5 min)
+
+## Option rapide
+1. Télécharger la dernière version dans "Releases"
+2. Lancer le .exe
+
+## Option build (dev)
+1. Ouvrir `FluentCleaner.slnx`
+2. Build en Release
+3. Exécuter le binaire
+
+---
+
+# 3. Comprendre l’architecture (10 min)
+
+## Fonctionnement global
+1. Le logiciel lit un fichier `winapp2.ini`
+2. Chaque entrée = règle de nettoyage
+3. Le parser analyse le système
+4. Les résultats sont affichés dans l’UI
+
+## Concepts clés
+- Signature = règle de détection
+- Database = fichier de règles
+- Multi-database = plusieurs sources combinées
+
+## Exemple logique
+`
