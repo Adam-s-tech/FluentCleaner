@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
   <resheader name="version"><value>2.0</value></resheader>
@@ -44,7 +44,9 @@
   <data name="MenuAnalyzeEntry.Text"><value>Analyze</value></data>
   <data name="MenuCleanEntry.Text"><value>Clean</value></data>
   <data name="MenuExplainEntry.Text"><value>Explain with AI</value></data>
-  <data name="LblAIDesc.Text"><value>Right-click any entry on the Cleaner page → Explain with AI. Powered by Groq (llama-3.3-70b) — free, no billing. Nothing is sent without your explicit action. Requires your own API key.</value></data>
+  <data name="MenuShowSource.Text"><value>Show source</value></data>
+  <data name="LblAIDesc.Text"><value>Right-click any entry on the Cleaner page → Explain with AI. Choose Groq, OpenAI or Anthropic. Nothing is sent without your explicit action. Requires your own API key.</value></data>
+  <data name="LblAICustomHint.Text"><value>💡 Once your key is saved, the Custom Cleaners page also unlocks AI — describe what to clean and it generates a ready-to-use Winapp2 entry or PowerShell script for you.</value></data>
   <data name="ResultsHeader.Text"><value>Results</value></data>
   <data name="BtnBackToResults.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Back to results</value></data>
   <data name="BtnCleanDetail.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Delete these files now</value></data>
@@ -86,6 +88,22 @@
   <data name="DlgWarningMessage"><value>The selected Winapp2 entries include the following warnings:</value></data>
   <data name="DlgExplainThinking"><value>Thinking…</value></data>
   <data name="DlgExplainClose"><value>Close</value></data>
+  <data name="DlgSourceCopy"><value>Copy</value></data>
+  <data name="DlgSourceReport"><value>Report entry</value></data>
+  <data name="DlgSourceDryRun"><value>Dry Run</value></data>
+  <data name="RuleLabTitle"><value>Rule Lab — {0}</value></data>
+  <data name="DlgSourceHint"><value>Edit the rules, then Dry Run to preview the hits.</value></data>
+  <data name="DlgSourceScanning"><value>Scanning…</value></data>
+  <data name="DlgSourceNoEntry"><value>No valid entry — needs a Detect and a FileKey.</value></data>
+  <data name="DlgSourceFound"><value>{0} files · {1}</value></data>
+  <data name="DlgSourceMore"><value>… and {0} more</value></data>
+  <data name="DlgSourceError"><value>Scan failed: {0}</value></data>
+  <data name="DlgSourceCancel"><value>Cancel</value></data>
+  <data name="DlgSourceCancelled"><value>Cancelled.</value></data>
+  <data name="DlgRestartTitle"><value>Restart required</value></data>
+  <data name="DlgRestartMessage"><value>FluentCleaner needs to restart to apply the changes.</value></data>
+  <data name="DlgRestartNow"><value>Restart now</value></data>
+  <data name="DlgRestartLater"><value>Later</value></data>
 
   <!-- ============================================================
        STATUS MESSAGES — CleanerPageViewModel (format strings)
@@ -124,8 +142,8 @@
   ============================================================ -->
   <data name="SettingsTitle.Text"><value>Settings</value></data>
   <!-- Settings Page — donation InfoBar -->
-  <data name="DonationBar.Title"><value>FluentCleaner is going open source.</value></data>
-  <data name="DonationBar.Message"><value>Put a lot of work into this — if it helps you and you feel like saying thanks, a donation would really mean a lot. ♥</value></data>
+  <data name="DonationBar.Title"><value>Support FluentCleaner</value></data>
+  <data name="DonationBar.Message"><value>Choose an amount and currency for PayPal, or support the project through Ko-fi. ♥</value></data>
   <data name="BtnDonate.Content"><value>Support the project</value></data>
   <data name="MenuDonatePayPal.Text"><value>Donate via PayPal</value></data>
   <data name="MenuDonateKoFi.Text"><value>Donate via Ko-fi</value></data>
@@ -162,14 +180,26 @@
   <data name="LblPostCleanDesc.Text"><value>One command per line — runs sequentially after every clean pass.</value></data>
   <data name="SectionExclusions.Text"><value>Global exclusions</value></data>
   <data name="LblExclusionsDesc.Text"><value>Paths listed here are never cleaned — overrides all database rules.</value></data>
+  <data name="LnkProtectedPaths.Content"><value>View protected paths</value></data>
+  <data name="DlgProtectedTitle"><value>Protected paths</value></data>
+  <data name="DlgProtectedDesc"><value>These are always skipped, no matter what the database says. They hold browser extension data that some apps (password managers, ad blockers) break without.</value></data>
   <data name="SectionHistory.Text"><value>History</value></data>
   <data name="LblHistoryDesc.Text"><value>Track how much junk accumulates over time.</value></data>
   <data name="LblCleanHistory.Text"><value>Clean history</value></data>
   <data name="BtnClearHistory.Content"><value>Clear history</value></data>
+  <data name="SectionScheduler.Text"><value>Scheduled cleaning</value></data>
+  <data name="LblSchedulerDesc.Text"><value>Runs the same cleaning as /AUTO through Windows Task Scheduler. The task runs only while you are signed in and does not require administrator rights.</value></data>
+  <data name="SchedulerEnabled.Header"><value>Enable scheduled cleaning</value></data>
+  <data name="SchedulerFrequency.Header"><value>Frequency</value></data>
+  <data name="SchedulerTime.Header"><value>Time</value></data>
+  <data name="SchedulerShutdown.Content"><value>Shut down the PC afterwards</value></data>
+  <data name="SchedulerApply.Content"><value>Apply</value></data>
+  <data name="SchedulerOpen.Content"><value>Open Windows Task Scheduler</value></data>
   <data name="SectionAI.Text"><value>AI explanations</value></data>
   <data name="LblAIOptIn.Text"><value>opt-in</value></data>
   <data name="LblAIPreview.Text"><value>preview</value></data>
   <data name="BtnAIDiscussion.Content"><value>Thoughts? Join the discussion →</value></data>
+  <data name="CboAIProvider.Header"><value>Provider</value></data>
   <data name="BtnSaveApiKey.Content"><value>Save</value></data>
   <data name="BtnTestApiKey.Content"><value>Test</value></data>
   <data name="BtnGetApiKey.Content"><value>Get key</value></data>
@@ -209,6 +239,17 @@
   <data name="St_MenuCheckUpdates"><value>Check for updates</value></data>
   <data name="St_ApiKeyMissing"><value>⚠ Enter an API key first.</value></data>
   <data name="St_ApiKeyTesting"><value>Testing…</value></data>
+  <data name="Scheduler_FreqDaily"><value>Daily</value></data>
+  <data name="Scheduler_FreqWeekly"><value>Weekly (Monday)</value></data>
+  <data name="Scheduler_FreqLogon"><value>At logon</value></data>
+  <data name="Scheduler_StatusActive"><value>✓ Scheduled task is active.</value></data>
+  <data name="Scheduler_StatusInactive"><value>✗ Not scheduled.</value></data>
+  <data name="Scheduler_Applying"><value>Applying…</value></data>
+  <data name="Scheduler_ErrorExecutablePath"><value>Could not resolve the FluentCleaner executable path.</value></data>
+  <data name="Scheduler_ResultCreated"><value>Scheduled task created.</value></data>
+  <data name="Scheduler_ResultNothingToRemove"><value>Nothing to remove.</value></data>
+  <data name="Scheduler_ResultRemoved"><value>Scheduled task removed.</value></data>
+  <data name="Scheduler_ErrorSchtasks"><value>Windows Task Scheduler failed.</value></data>
   <data name="St_ExportSuccess"><value>Settings exported to {0}</value></data>
   <data name="St_ExportFailed"><value>Export failed: {0}</value></data>
   <data name="St_ImportSuccess"><value>Settings imported from {0}</value></data>
@@ -222,6 +263,7 @@
   <data name="CustomEmptyHint2.Text"><value>Create a new cleaner — it will appear here automatically.</value></data>
   <data name="MenuEditEntry.Text"><value>Edit</value></data>
   <data name="MenuDeleteEntry.Text"><value>Delete</value></data>
+  <data name="MenuTestEntry.Text"><value>Test in Rule Lab</value></data>
   <data name="MenuRunEntry.Text"><value>Run</value></data>
   <data name="BtnNewCleaner.Content"><value>+ New Cleaner</value></data>
   <data name="BtnRunScript.Text"><value>Run</value></data>
@@ -259,7 +301,9 @@
   <data name="DlgNewCleanerNamePlaceholder"><value>My Cleaner</value></data>
   <data name="DlgNewCleanerAiPlaceholder"><value>Generate with AI - describe what to clean (results may vary)</value></data>
   <data name="DlgNewCleanerGenerate.Content"><value>Generate</value></data>
+  <data name="DlgNewCleanerGenerateBtn"><value>Generate</value></data>
   <data name="DlgNewCleanerContentLabel"><value>Content</value></data>
+  <data name="DlgNewCleanerTest"><value>Test in Rule Lab</value></data>
   <data name="DlgNewCleanerLoadTemplate.Content"><value>Load template</value></data>
   <data name="DlgNewCleanerTitleNew"><value>New custom cleaner</value></data>
   <data name="DlgNewCleanerTitleEdit"><value>Edit — {0}</value></data>
@@ -268,10 +312,10 @@
   <!-- ============================================================
        AI EXPLAINER
   ============================================================ -->
-  <data name="AI_NoKey"><value>No API key configured. Go to Settings → AI explanations to add your Groq API key (free at console.groq.com).</value></data>
-  <data name="AI_ApiError"><value>Groq API error: {0}</value></data>
+  <data name="AI_NoKey"><value>No API key configured for the selected provider. Go to Settings → AI explanations to add one.</value></data>
+  <data name="AI_ApiError"><value>{0} API error: {1}</value></data>
   <data name="AI_NoResponse"><value>No response received.</value></data>
-  <data name="AI_NetworkError"><value>Could not reach Groq API: {0}</value></data>
+  <data name="AI_NetworkError"><value>Could not reach {0}: {1}</value></data>
   <data name="AI_NoKeyShort"><value>No API key configured — go to Settings → AI explanations.</value></data>
 
   <!-- ============================================================
@@ -314,5 +358,32 @@
   <data name="CLI_AppxNothingRemoved"><value>  Nothing was removed.</value></data>
   <data name="CLI_AppxDisabled"><value>  Winappx database is disabled — enable it in Settings.</value></data>
   <data name="CLI_AppxNotFound"><value>  Winappx.ini not found — download it in Settings.</value></data>
+
+  <!-- Settings navigator / Cookie Manager -->
+  <data name="SettingsNavGeneral.Content"><value>General</value></data>
+  <data name="SettingsNavCookies.Content"><value>Cookies</value></data>
+  <data name="SettingsNavExclusions.Content"><value>Exclusions</value></data>
+  <data name="SettingsNavTasks.Content"><value>Post-clean tasks</value></data>
+  <data name="SettingsNavHistory.Content"><value>History</value></data>
+  <data name="SettingsNavAI.Content"><value>AI</value></data>
+  <data name="SettingsNavScheduler.Content"><value>Scheduler</value></data>
+  <data name="SettingsNavAbout.Content"><value>About</value></data>
+  <data name="Cookies_Title"><value>Cookies</value></data>
+  <data name="Cookies_Subtitle"><value>Choose website cookies that should survive browser cleaning</value></data>
+  <data name="Cookies_Available"><value>Cookies found</value></data>
+  <data name="Cookies_Kept"><value>Cookies to keep</value></data>
+  <data name="Cookies_Search"><value>Search</value></data>
+  <data name="Cookies_Refresh"><value>Refresh</value></data>
+  <data name="Cookies_Scanning"><value>Reading browser cookies…</value></data>
+  <data name="Cookies_Status"><value>{0} websites found in {1} browser profiles.</value></data>
+  <data name="Cookies_StatusUnavailable"><value>{0} websites found in {1} browser profiles · {2} unavailable. Close browsers and refresh.</value></data>
+  <data name="Cookies_DeleteUnavailable"><value>{0} browser profiles could not be changed. Close browsers and try again.</value></data>
+  <data name="Cookies_MiKeep"><value>Keep</value></data>
+  <data name="Cookies_MiDelete"><value>Delete</value></data>
+  <data name="Cookies_MiRemove"><value>Remove</value></data>
+  <data name="Cookies_MiImport"><value>Import...</value></data>
+  <data name="Cookies_MiExport"><value>Export...</value></data>
+  <data name="Cookies_TextFiles"><value>Text files</value></data>
+  <data name="Cleaning_CleanedCookies"><value>Cleaned {0} cookies: {1}</value></data>
 
 </root>

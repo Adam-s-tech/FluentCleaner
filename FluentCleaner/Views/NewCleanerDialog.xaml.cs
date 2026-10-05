@@ -14,12 +14,20 @@ public sealed partial class NewCleanerDialog : ContentDialog
     {
         InitializeComponent();
 
-        Title = existing is null ? "New custom cleaner" : $"Edit — {existing.Name}";
+        // Localized strings that can't use x:Uid (ContentDialog buttons) or share plain code-side keys.
+        PrimaryButtonText       = ResourceService.Get("DlgNewCleanerSave");
+        CloseButtonText         = ResourceService.Get("DlgNewCleanerCancel");
+        nameBox.Header          = ResourceService.Get("DlgNewCleanerNameHeader");
+        nameBox.PlaceholderText = ResourceService.Get("DlgNewCleanerNamePlaceholder");
+        promptBox.PlaceholderText = ResourceService.Get("DlgNewCleanerAiPlaceholder");
+        contentLabel.Text       = ResourceService.Get("DlgNewCleanerContentLabel");
+        testBtn.Content         = ResourceService.Get("DlgNewCleanerTest");
 
-        // Hide the AI row when no Groq API key is configured
-        var hasKey = !string.IsNullOrWhiteSpace(AppSettings.Instance.GroqApiKey)
-                  || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GROQ_API_KEY"));
-        aiRow.Visibility = hasKey ? Visibility.Visible : Visibility.Collapsed;
+        Title = existing is null ? ResourceService.Get("DlgNewCleanerTitleNew") : ResourceService.Fmt("DlgNewCleanerTitleEdit", existing.Name);
+
+        // Generation is available when the selected provider has a saved key
+        // or its standard environment variable is present.
+        aiRow.Visibility = AiExplainer.HasConfiguredKey ? Visibility.Visible : Visibility.Collapsed;
 
         if (existing is not null)
         {
@@ -31,6 +39,9 @@ public sealed partial class NewCleanerDialog : ContentDialog
 
             try { contentBox.Text = File.ReadAllText(existing.FilePath); } catch { }
         }
+
+        //Test only makes sense for ini;scripts can't be dry-run
+        testBtn.Visibility = IsScript ? Visibility.Collapsed : Visibility.Visible;
     }
 
     // --- Event handlers --------------------------------------------------
@@ -39,6 +50,15 @@ public sealed partial class NewCleanerDialog : ContentDialog
         var isPs1 = sender == btnPs1;
         btnIni.IsChecked = !isPs1;
         btnPs1.IsChecked =  isPs1;
+        testBtn.Visibility = isPs1 ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    // opens the current draft in Rule Lab so it can be dry-run before saving
+    private void TestBtn_Click(object sender, RoutedEventArgs e)
+    {
+        if (IsScript) return;
+        var name = EntryName.Length > 0 ? EntryName : "Draft";
+        new RuleLabWindow(name, contentBox.Text, RequestedTheme).Activate();
     }
 
     private void TemplateBtn_Click(object sender, RoutedEventArgs e) =>
@@ -50,12 +70,12 @@ public sealed partial class NewCleanerDialog : ContentDialog
         if (string.IsNullOrEmpty(desc)) return;
 
         generateBtn.IsEnabled = false;
-        generateBtn.Content   = "…";
+        generateBtn.Content   = ResourceService.Get("DlgNewCleanerGenerating");
         contentBox.Text       = IsScript
             ? await AiExplainer.GenerateScriptAsync(desc)
             : await AiExplainer.GenerateEntryAsync(desc);
         generateBtn.IsEnabled = true;
-        generateBtn.Content   = "Generate";
+        generateBtn.Content   = ResourceService.Get("DlgNewCleanerGenerateBtn");
     }
 
     // --- Templates -------------------------------------------------------

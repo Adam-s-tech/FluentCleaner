@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -5,70 +6,58 @@ using FluentCleaner.Models;
 
 namespace FluentCleaner.Services;
 
-/* Talks to Groq (llama-3.3-70b) to explain a Winapp2 entry in plain English.
-   The real file paths and registry keys go into the prompt so the answer is actually about
-   what THIS entry does, not some generic Winapp2 boilerplate.
-   Groq has been free for me so far; grab a key at console.groq.com.
-   Cached in-memory so reopening the same entry is instant. */
+// Explains Winapp2 entries and generates Custom Cleaners through the provider
+// selected in Settings. Results are cached per provider, language and rule.
 public static class AiExplainer
 {
     private static readonly HttpClient _http = new();
     private static readonly Dictionary<string, string> _cache = new(StringComparer.OrdinalIgnoreCase);
 
+    private static (string BaseUrl, string Model) ProviderInfo(string provider) => provider switch
+    {
+        "OpenAI"    => ("https://api.openai.com/v1/chat/completions", "gpt-4o-mini"),
+        "Anthropic" => ("https://api.anthropic.com/v1/messages", "claude-haiku-4-5-20251001"),
+        _           => ("https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-120b"),
+    };
+
+    private static string? ApiKey(string provider) => provider switch
+    {
+        "OpenAI"    => AppSettings.Instance.OpenAiApiKey ?? Environment.GetEnvironmentVariable("OPENAI_API_KEY"),
+        "Anthropic" => AppSettings.Instance.AnthropicApiKey ?? Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"),
+        _           => AppSettings.Instance.GroqApiKey ?? Environment.GetEnvironmentVariable("GROQ_API_KEY"),
+    };
+
+    private static bool IsAnthropic(string provider) => provider == "Anthropic";
+
+    public static bool HasConfiguredKey =>
+        !string.IsNullOrWhiteSpace(ApiKey(AppSettings.Instance.AiProvider));
+
+    private static string ProviderMessage(string key, string provider, string detail)
+    {
+        var template = ResourceService.Get(key);
+        return template.Contains("{1}", StringComparison.Ordinal)
+            ? string.Format(template, provider, detail)
+            : $"{provider}: {detail}";
+    }
+
     public static async Task<string> ExplainAsync(CleanerEntry entry)
     {
-        if (_cache.TryGetValue(entry.Name, out var cached))
+        var provider = AppSettings.Instance.AiProvider;
+        var cacheKey = $"{provider}\n{AppSettings.Instance.Language}\n{entry.RawText}";
+        if (_cache.TryGetValue(cacheKey, out var cached))
             return cached;
 
-        var apiKey = AppSettings.Instance.GroqApiKey
-                     ?? Environment.GetEnvironmentVariable("GROQ_API_KEY");
+        var apiKey = ApiKey(provider);
         if (string.IsNullOrWhiteSpace(apiKey))
-            return "No API key configured. Go to Settings → AI explanations to add your Groq API key (free at console.groq.com).";
+            return $"{provider}: {ResourceService.Get("AI_NoKeyShort")}";
 
-        var prompt = BuildPrompt(entry);
+        var systemPrompt = "You are a Windows PC expert. Explain Winapp2 cleaner entries concisely and accurately based on the file paths and registry keys provided." + LangInstruction();
+        var (text, error) = await SendChatAsync(provider, apiKey!, systemPrompt, BuildPrompt(entry), 300);
+        if (error != null)
+            return ProviderMessage("AI_ApiError", provider, error);
 
-        try
-        {
-            using var req = new HttpRequestMessage(HttpMethod.Post, "https://api.groq.com/openai/v1/chat/completions");
-            req.Headers.Add("Authorization", $"Bearer {apiKey}");
-            req.Content = new StringContent(
-                JsonSerializer.Serialize(new
-                {
-                    model      = "llama-3.3-70b-versatile",
-                    max_tokens = 300,
-                    messages   = new[]
-                    {
-                        new { role = "system", content = "You are a Windows PC expert. Explain Winapp2 cleaner entries concisely and accurately based on the file paths and registry keys provided." },
-                        new { role = "user",   content = prompt }
-                    }
-                }),
-                Encoding.UTF8, "application/json");
-
-            var res  = await _http.SendAsync(req);
-            var json = await res.Content.ReadAsStringAsync();
-
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
-
-            if (root.TryGetProperty("error", out var err))
-            {
-                var msg = err.TryGetProperty("message", out var m) ? m.GetString() : "Unknown error";
-                return $"Groq API error: {msg}";
-            }
-
-            var text = root
-                .GetProperty("choices")[0]
-                .GetProperty("message")
-                .GetProperty("content")
-                .GetString() ?? "No response received.";
-
-            _cache[entry.Name] = text;
-            return text;
-        }
-        catch (Exception ex)
-        {
-            return $"Could not reach Groq API: {ex.Message}";
-        }
+        _cache[cacheKey] = text!;
+        return text!;
     }
 
     // Generates a Winapp2 INI entry from a plain-English description.
@@ -116,92 +105,123 @@ public static class AiExplainer
                 "  - Use Write-Host to report progress.\n" +
                 "  - NEVER use Invoke-Expression or download and execute remote code.");
 
-    // Shared HTTP helper used by GenerateEntryAsync and GenerateScriptAsync.
+    // Sends generation requests through the same provider selected for explanations.
     private static async Task<string> GenerateAsync(string userMsg, string systemPrompt, string errorPrefix)
     {
-        var apiKey = AppSettings.Instance.GroqApiKey
-                     ?? Environment.GetEnvironmentVariable("GROQ_API_KEY");
+        var provider = AppSettings.Instance.AiProvider;
+        var apiKey = ApiKey(provider);
         if (string.IsNullOrWhiteSpace(apiKey))
-            return $"{errorPrefix}No API key configured — go to Settings → AI explanations.";
+            return $"{errorPrefix}{provider}: {ResourceService.Get("AI_NoKeyShort")}";
+
+        var (text, error) = await SendChatAsync(provider, apiKey!, systemPrompt, userMsg, 500);
+        return error == null
+            ? text!
+            : $"{errorPrefix}{ProviderMessage("AI_ApiError", provider, error)}";
+    }
+
+    // A small real request verifies both the key and the selected provider.
+    public static async Task<string> TestKeyAsync(string apiKey, string provider)
+    {
+        var userMsg = "Describe FluentCleaner by Belim (builtbybel) in 2 short sentences. " +
+            "Facts: open-source, built solo, written in C# on .NET 10 and WinUI 3, native Windows UI, " +
+            "no telemetry, uses the Winapp2 database. Do NOT mention AI, machine learning or any " +
+            "AI-related features. Keep it factual." + LangInstruction();
+
+        var (text, error) = await SendChatAsync(provider, apiKey, systemPrompt: null, userMsg, maxTokens: 512);
+        return error != null ? $"✗ {error}" : $"✓ {text}";
+    }
+
+    // Groq and OpenAI use chat completions; Anthropic uses its own message shape.
+    private static async Task<(string? Text, string? Error)> SendChatAsync(
+        string provider, string apiKey, string? systemPrompt, string userMsg, int maxTokens)
+    {
+        var (baseUrl, model) = ProviderInfo(provider);
 
         try
         {
-            using var req = new HttpRequestMessage(HttpMethod.Post, "https://api.groq.com/openai/v1/chat/completions");
-            req.Headers.Add("Authorization", $"Bearer {apiKey}");
-            req.Content = new StringContent(
-                JsonSerializer.Serialize(new
+            using var req = new HttpRequestMessage(HttpMethod.Post, baseUrl);
+
+            object body;
+            if (IsAnthropic(provider))
+            {
+                req.Headers.Add("x-api-key", apiKey);
+                req.Headers.Add("anthropic-version", "2023-06-01");
+                var messages = new[] { new { role = "user", content = userMsg } };
+                body = systemPrompt is null
+                    ? new { model, max_tokens = maxTokens, messages }
+                    : new { model, max_tokens = maxTokens, system = systemPrompt, messages };
+            }
+            else
+            {
+                req.Headers.Add("Authorization", $"Bearer {apiKey}");
+                var messages = systemPrompt == null
+                    ? new[] { new { role = "user", content = userMsg } }
+                    : new[] { new { role = "system", content = systemPrompt }, new { role = "user", content = userMsg } };
+
+                if (provider == "Groq")
                 {
-                    model      = "llama-3.3-70b-versatile",
-                    max_tokens = 500,
-                    messages   = new[]
+                    body = new
                     {
-                        new { role = "system", content = systemPrompt },
-                        new { role = "user",   content = userMsg }
-                    }
-                }),
-                Encoding.UTF8, "application/json");
+                        model,
+                        max_completion_tokens = maxTokens,
+                        reasoning_effort = "low",
+                        reasoning_format = "hidden",
+                        messages
+                    };
+                }
+                else
+                {
+                    body = new { model, max_tokens = maxTokens, messages };
+                }
+            }
 
-            var res  = await _http.SendAsync(req);
+            req.Content = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+
+            using var res = await _http.SendAsync(req);
             var json = await res.Content.ReadAsStringAsync();
-
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
 
             if (root.TryGetProperty("error", out var err))
             {
-                var msg = err.TryGetProperty("message", out var m) ? m.GetString() : "Unknown error";
-                return $"{errorPrefix}Groq error: {msg}";
+                var msg = err.ValueKind == JsonValueKind.Object && err.TryGetProperty("message", out var m)
+                    ? m.GetString() : err.GetString();
+                return (null, msg ?? "Unknown error");
             }
 
-            return root
-                .GetProperty("choices")[0]
-                .GetProperty("message")
-                .GetProperty("content")
-                .GetString() ?? $"{errorPrefix}No response received.";
+            var text = IsAnthropic(provider)
+                ? root.GetProperty("content")[0].GetProperty("text").GetString()
+                : root.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
+
+            return string.IsNullOrWhiteSpace(text)
+                ? (null, ResourceService.Get("AI_NoResponse"))
+                : (text, null);
         }
         catch (Exception ex)
         {
-            return $"{errorPrefix}Could not reach Groq API: {ex.Message}";
+            return (null, ProviderMessage("AI_NetworkError", provider, ex.Message));
         }
     }
 
-    //just a quick key test;asks Groq one sentence about FluentCleaner; returns "✓ " or "✗"
-    public static async Task<string> TestKeyAsync(string apiKey)
+    // Match the answer language to the active Modern UI language.
+    private static string LangInstruction()
     {
+        var lang = AppSettings.Instance.Language;
+        if (string.IsNullOrWhiteSpace(lang))
+            lang = CultureInfo.CurrentUICulture.Name;
+
+        if (lang.StartsWith("en", StringComparison.OrdinalIgnoreCase))
+            return string.Empty;
+
         try
         {
-            using var req = new HttpRequestMessage(HttpMethod.Post, "https://api.groq.com/openai/v1/chat/completions");
-            req.Headers.Add("Authorization", $"Bearer {apiKey}");
-            req.Content = new StringContent(
-                JsonSerializer.Serialize(new
-                {
-                    model      = "llama-3.3-70b-versatile",
-                    max_tokens = 150,
-                    messages   = new[]
-                    {
-                        new { role = "user", content = "Describe FluentCleaner by Belim (builtbybel) in 2 short sentences. " +
-                        "Facts: open-source, built solo and fueled by coffee, written in C# on .NET 10 + WinUI 3, " +
-                        "native Windows 11 UI, no telemetry, uses the Winapp2 database. " +
-                        "Do NOT mention AI, machine learning or any AI-related features. Keep it factual." }
-                    }
-                }),
-                Encoding.UTF8, "application/json");
-
-            var res  = await _http.SendAsync(req);
-            var json = await res.Content.ReadAsStringAsync();
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
-
-            if (root.TryGetProperty("error", out var err))
-                return "✗ " + (err.TryGetProperty("message", out var m) ? m.GetString() : "API error");
-
-            var text = root.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
-            return "✓ " + text;
+            var name = CultureInfo.GetCultureInfo(lang).Parent.EnglishName;
+            return $" Please respond in {name}.";
         }
-        catch (Exception ex) { return "✗ " + ex.Message; }
+        catch { return string.Empty; }
     }
 
-    //build a prompt with real paths so the model knows exactly what gets cleaned
+    // Include the real paths so the explanation is about this rule, not its title alone.
     private static string BuildPrompt(CleanerEntry entry)
     {
         var sb = new StringBuilder();

@@ -3,11 +3,15 @@ using FluentCleaner.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Net.Http;
 
 namespace FluentCleaner.ViewModels;
 
 public record HistoryRow(string Date, string Amount, string Bar, string Items);
+
+// One entry in the language dropdown. Code is the BCP-47 tag ("en-US") or "" for system default.
+public record LanguageOption(string Code, string Name);
 
 public partial class SettingsPageViewModel : ObservableObject
 {
@@ -43,6 +47,10 @@ public partial class SettingsPageViewModel : ObservableObject
     [ObservableProperty] public partial bool   PostCleanEnabled  { get; set; }
     [ObservableProperty] public partial string PostCleanCommands { get; set; } = "";
 
+    // Global exclusions;paths that are never cleaned, no matter what the INI says
+    [ObservableProperty] public partial bool   GlobalExclusionsEnabled { get; set; }
+    [ObservableProperty] public partial string GlobalExclusionsText    { get; set; } = "";
+
     // History
     [ObservableProperty] public partial bool   CleanHistoryEnabled { get; set; } = true;
     [ObservableProperty] public partial string HistorySummary { get; set; } = "";
@@ -51,8 +59,13 @@ public partial class SettingsPageViewModel : ObservableObject
     // Shared
     [ObservableProperty] public partial string StatusText { get; set; } = "";
     [ObservableProperty] public partial bool   IsBusy { get; set; }             // single ring for all downloads
-    [ObservableProperty] public partial int    ThemeIndex { get; set; }
+    [ObservableProperty] public partial int    ThemeIndex    { get; set; }
     [ObservableProperty] public partial bool   RestartRequired { get; set; }
+
+    // Language dropdown — populated at runtime from the deployed Strings\{lang}\ folders.
+    public ObservableCollection<LanguageOption> Languages { get; } = [];
+    [ObservableProperty] public partial LanguageOption? SelectedLanguage { get; set; }
+    [ObservableProperty] public partial bool   IsPortable { get; set; }         // true when settings.json sits next to exe
 
     private bool _refreshing;
 
@@ -67,6 +80,44 @@ public partial class SettingsPageViewModel : ObservableObject
         AppSettings.Instance.Theme = theme;
         AppSettings.Instance.Save();
         (Microsoft.UI.Xaml.Application.Current as App)?.ApplyTheme(theme);
+    }
+
+    // --- Language -------------------------------------------------------------
+
+    partial void OnSelectedLanguageChanged(LanguageOption? value)
+    {
+        if (_refreshing || value is null) return;
+        AppSettings.Instance.Language = value.Code;
+        AppSettings.Instance.Save();
+        ResourceService.SetLanguage(value.Code); // applies PrimaryLanguageOverride; code-side strings switch immediately
+        // restart prompt is shown by SettingsPage code-behind via PropertyChanged
+    }
+
+    // Builds the dropdown: a "System default" entry first, then every discovered language shown in
+    // its own native name (e.g. "English", "Deutsch") so the picker reads naturally for each locale
+    private void BuildLanguageList()
+    {
+        Languages.Clear();
+        Languages.Add(new LanguageOption("", ResourceService.Get("St_LangAuto")));
+
+        foreach (var code in ResourceService.GetAvailableLanguages())
+            Languages.Add(new LanguageOption(code, NativeName(code)));
+
+        var current = AppSettings.Instance.Language ?? "";
+        SelectedLanguage = Languages.FirstOrDefault(l => l.Code == current) ?? Languages[0];
+    }
+
+    // Returns the language's own name, capitalized (de-DE -> "Deutsch", en-US -> "English").
+    private static string NativeName(string code)
+    {
+        try
+        {
+            var ci      = CultureInfo.GetCultureInfo(code);
+            var neutral = ci.IsNeutralCulture ? ci : (ci.Parent ?? ci);
+            var name    = (neutral ?? ci).NativeName;
+            return string.IsNullOrEmpty(name) ? code : char.ToUpper(name[0]) + name[1..];
+        }
+        catch { return code; }   // unknown tag? show the raw code rather than crashing
     }
 
     // --- Database toggles -----------------------------------------------------
@@ -85,7 +136,7 @@ public partial class SettingsPageViewModel : ObservableObject
         AppSettings.Instance.EnableWinapp3 = value;
         AppSettings.Instance.Save();
         StatusText = value && !File.Exists(Winapp3LocalPath)
-            ? "Winapp3 not downloaded yet — click Download."
+            ? ResourceService.Get("St_Winapp3NotDownloaded")
             : "";
         RefreshFileInfo();
     }
@@ -96,7 +147,7 @@ public partial class SettingsPageViewModel : ObservableObject
         AppSettings.Instance.EnableWinappx = value;
         AppSettings.Instance.Save();
         StatusText = value && !File.Exists(WinappxLocalPath)
-            ? "Winappx not downloaded yet — click Download."
+            ? ResourceService.Get("St_WinappxNotDownloaded")
             : "";
         RefreshFileInfo();
     }
@@ -132,6 +183,25 @@ public partial class SettingsPageViewModel : ObservableObject
         AppSettings.Instance.Save();
     }
 
+    // --- Global exclusions -------------------------------------------------------
+
+    partial void OnGlobalExclusionsEnabledChanged(bool value)
+    {
+        if (_refreshing) return;
+        AppSettings.Instance.GlobalExclusionsEnabled = value;
+        AppSettings.Instance.Save();
+    }
+
+    partial void OnGlobalExclusionsTextChanged(string value)
+    {
+        if (_refreshing) return;
+        AppSettings.Instance.GlobalExclusions = value
+            .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(l => l.Contains('|') ? l : $"PATH|{l}")    // bare paths become PATH exclusions
+            .ToList();
+        AppSettings.Instance.Save();
+    }
+
     // --- Junk Growth Tracker / Clean History -------------------------------------------------------------
 
     [RelayCommand]
@@ -149,12 +219,12 @@ public partial class SettingsPageViewModel : ObservableObject
 
         if (history.Count == 0)
         {
-            HistorySummary = "no runs recorded yet";
+            HistorySummary = ResourceService.Get("St_HistoryNone");
             return;
         }
 
         var totalFreed = history.Sum(e => e.BytesFreed);
-        HistorySummary = $"{history.Count} runs · {ScanResult.FormatBytes(totalFreed)} total freed";
+        HistorySummary = ResourceService.Fmt("St_HistorySummary", history.Count, ScanResult.FormatBytes(totalFreed));
 
         var maxBytes  = history.Max(e => e.BytesFreed);
         const int w   = 20;
@@ -166,7 +236,7 @@ public partial class SettingsPageViewModel : ObservableObject
                 Date:   e.Date.ToString("dd.MM.yyyy  HH:mm"),
                 Amount: ScanResult.FormatBytes(e.BytesFreed),
                 Bar:    new string('█', filled) + new string('░', w - filled),
-                Items:  $"{e.ItemsRemoved} items"
+                Items:  ResourceService.Fmt("St_HistoryItems", e.ItemsRemoved)
             ));
         }
     }
@@ -189,10 +259,14 @@ public partial class SettingsPageViewModel : ObservableObject
         WinappxNotAvailable = !WinappxAvailable;
         CustomPath          = s.CustomWinapp2Path ?? "";
         IsCustomSource      = !string.IsNullOrWhiteSpace(s.CustomWinapp2Path);
-        PostCleanEnabled    = s.PostCleanEnabled;
-        PostCleanCommands   = s.PostCleanCommands;
-        CleanHistoryEnabled = s.CleanHistoryEnabled;
-        ThemeIndex          = s.Theme switch { "Light" => 1, "Dark" => 2, _ => 0 };
+        PostCleanEnabled         = s.PostCleanEnabled;
+        PostCleanCommands        = s.PostCleanCommands;
+        GlobalExclusionsEnabled  = s.GlobalExclusionsEnabled;
+        GlobalExclusionsText     = string.Join("\n", s.GlobalExclusions);
+        CleanHistoryEnabled      = s.CleanHistoryEnabled;
+        IsPortable          = AppSettings.IsPortable;
+        ThemeIndex          = s.Theme    switch { "Light" => 1, "Dark"  => 2,    _ => 0 };
+        BuildLanguageList();
 
         _refreshing = false;
         BuildHistoryRows();
@@ -213,12 +287,12 @@ public partial class SettingsPageViewModel : ObservableObject
             StatusText = "";
             return;
         }
-        if (!File.Exists(path)) { StatusText = $"File not found: {path}"; return; }
+        if (!File.Exists(path)) { StatusText = ResourceService.Fmt("St_FileNotFound", path); return; }
 
         AppSettings.Instance.CustomWinapp2Path = path;
         AppSettings.Instance.Save();
         IsCustomSource = true;
-        StatusText = "Custom path saved.";
+        StatusText = ResourceService.Get("St_CustomPathSaved");
         RefreshFileInfo();
     }
 
@@ -238,43 +312,49 @@ public partial class SettingsPageViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanDownload))]
     private async Task DownloadLatestAsync()
     {
-        await DownloadFileAsync(Winapp2Url, Winapp2LocalPath, "Winapp2");
-        Refresh();
+        if (await DownloadFileAsync(Winapp2Url, Winapp2LocalPath, "Winapp2"))
+            Refresh();
     }
 
     [RelayCommand(CanExecute = nameof(CanDownload))]
     private async Task DownloadWinapp3Async()
     {
-        await DownloadFileAsync(Winapp3Url, Winapp3LocalPath, "Winapp3");
-        AppSettings.Instance.EnableWinapp3 = true;
-        AppSettings.Instance.Save();
-        Refresh(); // picks up EnableWinapp3 = true from disk
+        if (await DownloadFileAsync(Winapp3Url, Winapp3LocalPath, "Winapp3"))
+        {
+            AppSettings.Instance.EnableWinapp3 = true;
+            AppSettings.Instance.Save();
+            Refresh();
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanDownload))]
     private async Task DownloadWinappxAsync()
     {
-        await DownloadFileAsync(WinappxUrl, WinappxLocalPath, "Winappx");
-        AppSettings.Instance.EnableWinappx = true;
-        AppSettings.Instance.Save();
-        Refresh(); // picks up EnableWinappx = true from disk
+        if (await DownloadFileAsync(WinappxUrl, WinappxLocalPath, "Winappx"))
+        {
+            AppSettings.Instance.EnableWinappx = true;
+            AppSettings.Instance.Save();
+            Refresh();
+        }
     }
 
     private bool CanDownload() => !IsBusy;
 
-    private async Task DownloadFileAsync(string url, string destination, string label)
+    // Returns true on success, false on failure (error already written to StatusText).
+    private async Task<bool> DownloadFileAsync(string url, string destination, string label)
     {
         IsBusy = true;
-        StatusText = $"Downloading {label}…";
+        StatusText = ResourceService.Fmt("St_Downloading", label);
         try
         {
             using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
             var content = await http.GetStringAsync(url);
             await File.WriteAllTextAsync(destination, content);
-            StatusText      = $"{label} downloaded — {content.Length / 1024} KB";
+            StatusText      = ResourceService.Fmt("St_Downloaded", label, content.Length / 1024);
             RestartRequired = true;
+            return true;
         }
-        catch (Exception ex) { StatusText = $"Download failed: {ex.Message}"; }
+        catch (Exception ex) { StatusText = ResourceService.Fmt("St_DownloadFailed", ex.Message); return false; }
         finally              { IsBusy = false; }
     }
 
@@ -291,10 +371,10 @@ public partial class SettingsPageViewModel : ObservableObject
     {
         try
         {
-            if (!File.Exists(path)) return "Not downloaded";
+            if (!File.Exists(path)) return ResourceService.Get("St_FileInfoNotDownloaded");
             var fi    = new FileInfo(path);
             var lines = File.ReadLines(path).Count(l => l.StartsWith('[') && !l.StartsWith("[Winapp2"));
-            return $"{lines} entries  •  {fi.Length / 1024} KB  •  {fi.LastWriteTime:yyyy-MM-dd}";
+            return ResourceService.Fmt("St_FileInfo", lines, fi.Length / 1024, fi.LastWriteTime.ToString("yyyy-MM-dd"));
         }
         catch { return ""; }
     }

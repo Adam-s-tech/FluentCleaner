@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
   <resheader name="version"><value>2.0</value></resheader>
@@ -43,7 +43,9 @@
   <data name="MenuAnalyzeEntry.Text"><value>Analysieren</value></data>
   <data name="MenuCleanEntry.Text"><value>Bereinigen</value></data>
   <data name="MenuExplainEntry.Text"><value>Mit KI erklären</value></data>
-  <data name="LblAIDesc.Text"><value>Rechtsklick auf einen Eintrag auf der Cleaner-Seite → Mit KI erklären. Powered by Groq (llama-3.3-70b) — kostenlos, keine Abrechnung. Es wird nichts ohne deine ausdrückliche Aktion gesendet. Erfordert einen eigenen API-Schlüssel.</value></data>
+  <data name="MenuShowSource.Text"><value>Quelle anzeigen</value></data>
+  <data name="LblAIDesc.Text"><value>Rechtsklick auf einen Eintrag auf der Cleaner-Seite → Mit KI erklären. Wähle Groq, OpenAI oder Anthropic. Es wird nichts ohne deine ausdrückliche Aktion gesendet. Erfordert einen eigenen API-Schlüssel.</value></data>
+  <data name="LblAICustomHint.Text"><value>💡 Sobald dein Schlüssel gespeichert ist, schaltet die Seite „Eigene Reiniger" ebenfalls KI frei — beschreibe was bereinigt werden soll und sie generiert direkt einen fertigen Winapp2-Eintrag oder ein PowerShell-Skript.</value></data>
   <data name="ResultsHeader.Text"><value>Ergebnisse</value></data>
   <data name="BtnBackToResults.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Zurück zu den Ergebnissen</value></data>
   <data name="BtnCleanDetail.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Diese Dateien jetzt löschen</value></data>
@@ -81,6 +83,22 @@
   <data name="DlgWarningMessage"><value>Die ausgewählten Winapp2-Einträge enthalten folgende Warnungen:</value></data>
   <data name="DlgExplainThinking"><value>Analysiere…</value></data>
   <data name="DlgExplainClose"><value>Schließen</value></data>
+  <data name="DlgSourceCopy"><value>Kopieren</value></data>
+  <data name="DlgSourceReport"><value>Eintrag melden</value></data>
+  <data name="DlgSourceDryRun"><value>Testlauf</value></data>
+  <data name="RuleLabTitle"><value>Rule Lab — {0}</value></data>
+  <data name="DlgSourceHint"><value>Regeln anpassen, dann Testlauf für die Vorschau.</value></data>
+  <data name="DlgSourceScanning"><value>Scanne…</value></data>
+  <data name="DlgSourceNoEntry"><value>Kein gültiger Eintrag — braucht ein Detect und einen FileKey.</value></data>
+  <data name="DlgSourceFound"><value>{0} Dateien · {1}</value></data>
+  <data name="DlgSourceMore"><value>… und {0} weitere</value></data>
+  <data name="DlgSourceError"><value>Scan fehlgeschlagen: {0}</value></data>
+  <data name="DlgSourceCancel"><value>Abbrechen</value></data>
+  <data name="DlgSourceCancelled"><value>Abgebrochen.</value></data>
+  <data name="DlgRestartTitle"><value>Neustart erforderlich</value></data>
+  <data name="DlgRestartMessage"><value>Um die Änderungen anzuwenden, muss FluentCleaner neu gestartet werden.</value></data>
+  <data name="DlgRestartNow"><value>Jetzt neu starten</value></data>
+  <data name="DlgRestartLater"><value>Später</value></data>
 
   <!-- Status Messages -->
   <data name="St_Loading"><value>Lade Winapp2.ini...</value></data>
@@ -115,8 +133,8 @@
   ============================================================ -->
   <data name="SettingsTitle.Text"><value>Einstellungen</value></data>
   <!-- Settings Page — donation InfoBar -->
-  <data name="DonationBar.Title"><value>FluentCleaner wird Open Source.</value></data>
-  <data name="DonationBar.Message"><value>Hier steckt viel Arbeit drin — wenn dir die App hilft und du Danke sagen möchtest, würde eine Spende wirklich viel bedeuten. ♥</value></data>
+  <data name="DonationBar.Title"><value>FluentCleaner unterstützen</value></data>
+  <data name="DonationBar.Message"><value>Wähle für PayPal einen Betrag und eine Währung oder unterstütze das Projekt über Ko-fi. ♥</value></data>
   <data name="BtnDonate.Content"><value>Projekt unterstützen</value></data>
   <data name="MenuDonatePayPal.Text"><value>Per PayPal spenden</value></data>
   <data name="MenuDonateKoFi.Text"><value>Per Ko-fi spenden</value></data>
@@ -153,14 +171,26 @@
   <data name="LblPostCleanDesc.Text"><value>Ein Befehl pro Zeile — wird nach jedem Bereinigungsvorgang ausgeführt.</value></data>
   <data name="SectionExclusions.Text"><value>Globale Ausschlüsse</value></data>
   <data name="LblExclusionsDesc.Text"><value>Pfade hier werden nie bereinigt — überschreibt alle Datenbankregeln.</value></data>
+  <data name="LnkProtectedPaths.Content"><value>Geschützte Pfade anzeigen</value></data>
+  <data name="DlgProtectedTitle"><value>Geschützte Pfade</value></data>
+  <data name="DlgProtectedDesc"><value>Diese werden immer übersprungen, egal was die Datenbank sagt. Sie enthalten Browser-Erweiterungsdaten, ohne die manche Apps (Passwort-Manager, Werbeblocker) kaputtgehen.</value></data>
   <data name="SectionHistory.Text"><value>Verlauf</value></data>
   <data name="LblHistoryDesc.Text"><value>Verfolge, wie viel Junk sich im Laufe der Zeit ansammelt.</value></data>
   <data name="LblCleanHistory.Text"><value>Bereinigungsverlauf</value></data>
   <data name="BtnClearHistory.Content"><value>Verlauf löschen</value></data>
+  <data name="SectionScheduler.Text"><value>Geplante Reinigung</value></data>
+  <data name="LblSchedulerDesc.Text"><value>Führt dieselbe Reinigung wie /AUTO über die Windows-Aufgabenplanung aus. Die Aufgabe läuft nur, während du angemeldet bist, und benötigt keine Administratorrechte.</value></data>
+  <data name="SchedulerEnabled.Header"><value>Geplante Reinigung aktivieren</value></data>
+  <data name="SchedulerFrequency.Header"><value>Häufigkeit</value></data>
+  <data name="SchedulerTime.Header"><value>Uhrzeit</value></data>
+  <data name="SchedulerShutdown.Content"><value>PC danach herunterfahren</value></data>
+  <data name="SchedulerApply.Content"><value>Übernehmen</value></data>
+  <data name="SchedulerOpen.Content"><value>Windows-Aufgabenplanung öffnen</value></data>
   <data name="SectionAI.Text"><value>KI-Erklärungen</value></data>
   <data name="LblAIOptIn.Text"><value>opt-in</value></data>
   <data name="LblAIPreview.Text"><value>Vorschau</value></data>
   <data name="BtnAIDiscussion.Content"><value>Meinung? Zur Diskussion →</value></data>
+  <data name="CboAIProvider.Header"><value>Anbieter</value></data>
   <data name="BtnSaveApiKey.Content"><value>Speichern</value></data>
   <data name="BtnTestApiKey.Content"><value>Testen</value></data>
   <data name="BtnGetApiKey.Content"><value>Schlüssel holen</value></data>
@@ -199,6 +229,17 @@
   <data name="St_MenuCheckUpdates"><value>Auf Updates prüfen</value></data>
   <data name="St_ApiKeyMissing"><value>⚠ Zuerst einen API-Schlüssel eingeben.</value></data>
   <data name="St_ApiKeyTesting"><value>Teste…</value></data>
+  <data name="Scheduler_FreqDaily"><value>Täglich</value></data>
+  <data name="Scheduler_FreqWeekly"><value>Wöchentlich (Montag)</value></data>
+  <data name="Scheduler_FreqLogon"><value>Bei Anmeldung</value></data>
+  <data name="Scheduler_StatusActive"><value>✓ Geplante Aufgabe ist aktiv.</value></data>
+  <data name="Scheduler_StatusInactive"><value>✗ Nicht geplant.</value></data>
+  <data name="Scheduler_Applying"><value>Wird übernommen…</value></data>
+  <data name="Scheduler_ErrorExecutablePath"><value>Der Pfad zur FluentCleaner-Programmdatei konnte nicht ermittelt werden.</value></data>
+  <data name="Scheduler_ResultCreated"><value>Die geplante Aufgabe wurde erstellt.</value></data>
+  <data name="Scheduler_ResultNothingToRemove"><value>Es ist keine geplante Aufgabe zum Entfernen vorhanden.</value></data>
+  <data name="Scheduler_ResultRemoved"><value>Die geplante Aufgabe wurde entfernt.</value></data>
+  <data name="Scheduler_ErrorSchtasks"><value>Die Windows-Aufgabenplanung ist fehlgeschlagen.</value></data>
   <data name="St_ExportSuccess"><value>Einstellungen exportiert nach {0}</value></data>
   <data name="St_ExportFailed"><value>Export fehlgeschlagen: {0}</value></data>
   <data name="St_ImportSuccess"><value>Einstellungen importiert aus {0}</value></data>
@@ -212,6 +253,7 @@
   <data name="CustomEmptyHint2.Text"><value>Erstelle einen neuen Reiniger — er erscheint automatisch hier.</value></data>
   <data name="MenuEditEntry.Text"><value>Bearbeiten</value></data>
   <data name="MenuDeleteEntry.Text"><value>Löschen</value></data>
+  <data name="MenuTestEntry.Text"><value>Im Rule Lab testen</value></data>
   <data name="MenuRunEntry.Text"><value>Ausführen</value></data>
   <data name="BtnNewCleaner.Content"><value>+ Neuer Reiniger</value></data>
   <data name="BtnRunScript.Text"><value>Ausführen</value></data>
@@ -247,7 +289,9 @@
   <data name="DlgNewCleanerNamePlaceholder"><value>Mein Reiniger</value></data>
   <data name="DlgNewCleanerAiPlaceholder"><value>Mit KI generieren – beschreibe, was bereinigt werden soll</value></data>
   <data name="DlgNewCleanerGenerate.Content"><value>Generieren</value></data>
+  <data name="DlgNewCleanerGenerateBtn"><value>Generieren</value></data>
   <data name="DlgNewCleanerContentLabel"><value>Inhalt</value></data>
+  <data name="DlgNewCleanerTest"><value>Im Rule Lab testen</value></data>
   <data name="DlgNewCleanerLoadTemplate.Content"><value>Vorlage laden</value></data>
   <data name="DlgNewCleanerTitleNew"><value>Neuer eigener Reiniger</value></data>
   <data name="DlgNewCleanerTitleEdit"><value>Bearbeiten — {0}</value></data>
@@ -256,10 +300,10 @@
   <!-- ============================================================
        AI EXPLAINER
   ============================================================ -->
-  <data name="AI_NoKey"><value>Kein API-Schlüssel konfiguriert. Gehe zu Einstellungen → KI-Erklärungen, um deinen Groq-API-Schlüssel hinzuzufügen (kostenlos auf console.groq.com).</value></data>
-  <data name="AI_ApiError"><value>Groq-API-Fehler: {0}</value></data>
+  <data name="AI_NoKey"><value>Für den gewählten Anbieter ist kein API-Schlüssel konfiguriert. Gehe zu Einstellungen → KI-Erklärungen, um einen hinzuzufügen.</value></data>
+  <data name="AI_ApiError"><value>{0}-API-Fehler: {1}</value></data>
   <data name="AI_NoResponse"><value>Keine Antwort erhalten.</value></data>
-  <data name="AI_NetworkError"><value>Groq-API nicht erreichbar: {0}</value></data>
+  <data name="AI_NetworkError"><value>{0} nicht erreichbar: {1}</value></data>
   <data name="AI_NoKeyShort"><value>Kein API-Schlüssel konfiguriert — gehe zu Einstellungen → KI-Erklärungen.</value></data>
 
   <!-- ============================================================
@@ -302,5 +346,32 @@
   <data name="CLI_AppxNothingRemoved"><value>  Nichts wurde entfernt.</value></data>
   <data name="CLI_AppxDisabled"><value>  Winappx-Datenbank deaktiviert — in den Einstellungen aktivieren.</value></data>
   <data name="CLI_AppxNotFound"><value>  Winappx.ini nicht gefunden — in den Einstellungen herunterladen.</value></data>
+
+  <!-- Settings-Navigation / Cookie Manager -->
+  <data name="SettingsNavGeneral.Content"><value>Allgemein</value></data>
+  <data name="SettingsNavCookies.Content"><value>Cookies</value></data>
+  <data name="SettingsNavExclusions.Content"><value>Ausschließen</value></data>
+  <data name="SettingsNavTasks.Content"><value>Aufgaben</value></data>
+  <data name="SettingsNavHistory.Content"><value>Verlauf</value></data>
+  <data name="SettingsNavAI.Content"><value>KI</value></data>
+  <data name="SettingsNavScheduler.Content"><value>Zeitplan</value></data>
+  <data name="SettingsNavAbout.Content"><value>Über</value></data>
+  <data name="Cookies_Title"><value>Cookies</value></data>
+  <data name="Cookies_Subtitle"><value>Wähle Website-Cookies, die bei der Browser-Bereinigung erhalten bleiben</value></data>
+  <data name="Cookies_Available"><value>Gefundene Cookies</value></data>
+  <data name="Cookies_Kept"><value>Cookies behalten</value></data>
+  <data name="Cookies_Search"><value>Suche</value></data>
+  <data name="Cookies_Refresh"><value>Neu laden</value></data>
+  <data name="Cookies_Scanning"><value>Browser-Cookies werden gelesen…</value></data>
+  <data name="Cookies_Status"><value>{0} Websites in {1} Browserprofilen gefunden.</value></data>
+  <data name="Cookies_StatusUnavailable"><value>{0} Websites in {1} Browserprofilen gefunden · {2} nicht verfügbar. Browser schließen und neu laden.</value></data>
+  <data name="Cookies_DeleteUnavailable"><value>{0} Browserprofile konnten nicht geändert werden. Browser schließen und erneut versuchen.</value></data>
+  <data name="Cookies_MiKeep"><value>Behalten</value></data>
+  <data name="Cookies_MiDelete"><value>Löschen</value></data>
+  <data name="Cookies_MiRemove"><value>Entfernen</value></data>
+  <data name="Cookies_MiImport"><value>Importieren...</value></data>
+  <data name="Cookies_MiExport"><value>Exportieren...</value></data>
+  <data name="Cookies_TextFiles"><value>Textdateien</value></data>
+  <data name="Cleaning_CleanedCookies"><value>{0} Cookies bereinigt: {1}</value></data>
 
 </root>

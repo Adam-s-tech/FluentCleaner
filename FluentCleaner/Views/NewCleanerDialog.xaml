@@ -2,8 +2,6 @@
     x:Class="FluentCleaner.Views.NewCleanerDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    PrimaryButtonText="Save"
-    CloseButtonText="Cancel"
     DefaultButton="Primary"
     CornerRadius="8">
 
@@ -11,12 +9,12 @@
 
         <!-- Type picker -->
         <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,0,4">
-            <ToggleButton x:Name="btnIni" Content="Winapp2 entry (.ini)"    IsChecked="True" Click="TypeBtn_Click" />
-            <ToggleButton x:Name="btnPs1" Content="PowerShell script (.ps1)"               Click="TypeBtn_Click" />
+            <ToggleButton x:Name="btnIni" x:Uid="DlgNewCleanerTypeIni" IsChecked="True" Click="TypeBtn_Click" />
+            <ToggleButton x:Name="btnPs1" x:Uid="DlgNewCleanerTypePs1"                    Click="TypeBtn_Click" />
         </StackPanel>
 
         <!-- Name -->
-        <TextBox x:Name="nameBox" Header="Name" PlaceholderText="My Cleaner" Margin="0,0,0,4" />
+        <TextBox x:Name="nameBox" Margin="0,0,0,4" />
 
         <!-- AI generate row (hidden when no API key is configured) -->
         <Grid x:Name="aiRow" Margin="0,0,0,4">
@@ -25,9 +23,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="promptBox"
-                     PlaceholderText="Generate with AI - describe what to clean (results may vary)"
                      Margin="0,0,6,0" />
-            <Button x:Name="generateBtn" Grid.Column="1" Content="Generate" Click="GenerateBtn_Click" />
+            <Button x:Name="generateBtn" x:Uid="DlgNewCleanerGenerate" Grid.Column="1" Click="GenerateBtn_Click" />
         </Grid>
 
         <!-- Content header: label left, Load template right -->
@@ -36,10 +33,14 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Content" VerticalAlignment="Center"
+            <TextBlock x:Name="contentLabel" VerticalAlignment="Center"
                        Style="{StaticResource BodyStrongTextBlockStyle}" />
-            <HyperlinkButton Grid.Column="1" Content="Load template"
-                             Padding="0" Click="TemplateBtn_Click" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                <!-- Test:dry-run the draft in Rule Lab, no save needed;ini only -->
+                <HyperlinkButton x:Name="testBtn" Padding="0" Click="TestBtn_Click" />
+                <HyperlinkButton x:Uid="DlgNewCleanerLoadTemplate"
+                                 Padding="0" Click="TemplateBtn_Click" />
+            </StackPanel>
         </Grid>
 
         <!-- Content editor -->

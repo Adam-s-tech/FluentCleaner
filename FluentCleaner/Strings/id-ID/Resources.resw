@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
   <resheader name="version"><value>2.0</value></resheader>
@@ -259,6 +259,7 @@
   <data name="DlgNewCleanerNamePlaceholder"><value>Pembersih Saya</value></data>
   <data name="DlgNewCleanerAiPlaceholder"><value>Buat dengan AI - jelaskan apa yang mau dibersihkan (hasil bisa berbeda)</value></data>
   <data name="DlgNewCleanerGenerate.Content"><value>Buat</value></data>
+  <data name="DlgNewCleanerGenerateBtn"><value>Buat</value></data>
   <data name="DlgNewCleanerContentLabel"><value>Konten</value></data>
   <data name="DlgNewCleanerLoadTemplate.Content"><value>Memuat template</value></data>
   <data name="DlgNewCleanerTitleNew"><value>Pembersih Kustom Baru</value></data>

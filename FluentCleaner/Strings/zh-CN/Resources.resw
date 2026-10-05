@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
   <resheader name="version"><value>2.0</value></resheader>
@@ -122,7 +122,7 @@
   <!-- ============================================================
        SETTINGS PAGE — static XAML strings (x:Uid)
   ============================================================ -->
-  <data name="SettingsTitle.Text"><value>Settings</value></data>
+  <data name="SettingsTitle.Text"><value>设置</value></data>
   <!-- Settings Page — donation InfoBar -->
   <data name="DonationBar.Title"><value>FluentCleaner 是开源的。</value></data>
   <data name="DonationBar.Message"><value>这款软件耗费了大量开发精力，如果它对你有所帮助，若愿意表达支持，捐赠将是对开发者莫大的鼓励。♥</value></data>
@@ -166,7 +166,7 @@
   <data name="LblHistoryDesc.Text"><value>记录垃圾文件随时间累积的占用数据。</value></data>
   <data name="LblCleanHistory.Text"><value>清理历史记录</value></data>
   <data name="BtnClearHistory.Content"><value>清空记录</value></data>
-  <data name="SectionAI.Text"><value>AI条目解读</value></data>
+  <data name="SectionAI.Text"><value>AI 条目解读</value></data>
   <data name="LblAIOptIn.Text"><value>手动启用</value></data>
   <data name="LblAIPreview.Text"><value>预览版功能</value></data>
   <data name="BtnAIDiscussion.Content"><value>有建议？前往讨论区 →</value></data>
@@ -207,7 +207,7 @@
   <data name="St_UpToDateMessage"><value>{0}为当前最新版本。</value></data>
   <data name="St_MenuUpdate"><value>⬆ 发现更新 — {0}</value></data>
   <data name="St_MenuCheckUpdates"><value>检查更新</value></data>
-  <data name="St_ApiKeyMissing"><value>⚠ 请先填写API密钥。</value></data>
+  <data name="St_ApiKeyMissing"><value>⚠ 请先填写 API 密钥。</value></data>
   <data name="St_ApiKeyTesting"><value>正在测试连接…</value></data>
   <data name="St_ExportSuccess"><value>配置已导出至{0}</value></data>
   <data name="St_ExportFailed"><value>导出失败：{0}</value></data>
@@ -240,10 +240,10 @@
   <data name="St_CustomDeleteMessage"><value>此操作会永久移除该自定义清理规则。</value></data>
   <data name="St_CustomDeleteConfirm"><value>删除</value></data>
   <data name="St_CustomDeleteCancel"><value>取消</value></data>
-  <data name="St_CustomRunning"><value>正在执行{0}...</value></data>
+  <data name="St_CustomRunning"><value>正在执行 {0}...</value></data>
   <data name="St_CustomScriptError"><value>{0}：无法读取脚本文件 — {1}</value></data>
   <data name="St_CustomCompleted"><value>{0}：执行完成。</value></data>
-  <data name="St_CustomFailed"><value>{0}：执行失败（退出码{1}）。</value></data>
+  <data name="St_CustomFailed"><value>{0}：执行失败（退出代码 {1}）。</value></data>
   <data name="St_CustomEntryNone"><value>未解析到任何清理条目</value></data>
   <data name="St_CustomEntryOne"><value>1条清理项 · {0}</value></data>
   <data name="St_CustomEntryMany"><value>{0} 条清理项 · {1}</value></data>
@@ -259,6 +259,7 @@
   <data name="DlgNewCleanerNamePlaceholder"><value>自定义清理规则</value></data>
   <data name="DlgNewCleanerAiPlaceholder"><value>AI自动生成 - 描述需要清理的内容（生成效果仅供参考）</value></data>
   <data name="DlgNewCleanerGenerate.Content"><value>生成</value></data>
+  <data name="DlgNewCleanerGenerateBtn"><value>生成</value></data>
   <data name="DlgNewCleanerContentLabel"><value>内容</value></data>
   <data name="DlgNewCleanerLoadTemplate.Content"><value>加载模板</value></data>
   <data name="DlgNewCleanerTitleNew"><value>新建自定义清理规则</value></data>

@@ -1,8 +1,20 @@
+> [!CAUTION]
+> ## ⚠️ Beware of Fake FluentCleaner Websites
+>
+> **FluentCleaner has no affiliation with `fluentcleaner.org`**
+>
+> The **only official source** for FluentCleaner is **this GitHub repository**. I do not own, operate, or endorse that website or any other third-party download site.
+>
+> **For your safety, only download FluentCleaner from the official releases published here on GitHub.**
+>
+> A polished website doesn't make it official, **always verify the source. 🛡️**
+---
+
 # FluentCleaner
 ### modern, transparent, no spyware, no scareware, no dark patterns, no upsell garbage, no fake registry magic
 
 
-<img width="1536" height="1024" alt="FluentCleaner" src="FluentCleaner/Assets/Banner.avif" />
+<img width="1536" height="1024" alt="FluentCleaner" src="FluentCleaner/Assets/Banner.png" />
 
 
 _i built my own take on a cleaner, inspired by the old CCleaner from back in the 2006 days, just adapted to how things should work today. modern (built with WinUI 3), minimal and focused on actually cleaning what matters (without all the usual nonsense)_
@@ -31,6 +43,48 @@ here's a first preview so you can get a feel for the direction. i might end up f
 
 if you like it, cool. if not, also fair
 
+## 🚀 Download Latest Stable
+FluentCleaner comes in two flavors. Same cleaning engine and winapp2.ini parser underneath, different UI and runtime story.
+
+|  | **FluentCleaner** (WinUI 3) | **FluentCleaner Classic** |
+|---|---|---|
+| Framework | .NET 10 + Windows App SDK | .NET Framework 4.8 (WinForms) |
+| Deployment | self-contained (runtime bundled) | framework-dependent (uses the runtime already on your system) |
+| Unpacked size | ~140 MB | ~3.57 MB |
+| Files | 243 | 20 |
+| Platform | x64 / ARM64, Windows 10 build 17763+ | practically any Windows |
+| Shared engine | `FluentCleaner.Core` (netstandard2.0) — scan/clean logic, Winapp2.ini parser | same |
+| Requirements | Windows 10 2004 (Build 19041) or later + [Windows App SDK 2.0.1 runtime](https://aka.ms/windowsappsdk/2.0/2.0.1/windowsappruntimeinstall-x64.exe) (installed once, separately) | none — uses whatever .NET Framework is already on your system |
+| Download | [⬇ Latest](https://github.com/builtbybel/FluentCleaner/releases/latest/download/FluentCleaner-win-x64.zip) | [⬇ Latest](https://github.com/builtbybel/FluentCleaner/releases/latest/download/FluentCleaner-Classic-net48.zip) · [more info](https://github.com/builtbybel/FluentCleaner/releases/tag/classic-1.0.0) |
+
+**Not sure which one to grab?** If you want the modern look and don't mind installing the Windows App SDK once, go with the main version. If you want something tiny, portable, and framework-dependent (or you're on an older/locked-down machine), grab Classic.
+
+### Install with WinGet
+
+The modern **WinUI 3 edition** is also available through Windows Package Manager:
+
+```powershell
+winget install --id Builtbybel.FluentCleaner --exact
+```
+
+Already installed? Update to the latest release with:
+```powershell
+winget upgrade --id Builtbybel.FluentCleaner --exact
+```
+_WinGet currently installs the modern edition. FluentCleaner Classic remains available as a portable download._
+
+> 💬 **Classic or Modern?** [Vote here](https://github.com/builtbybel/FluentCleaner/discussions/100) — curious which one people actually end up using day to day.
+
+## ❤️ Support
+
+no company behind this, no investors, no marketing department. just one person building a tool because the alternative got worse every year. every bit of support helps keep it going
+
+| PayPal | Ko-fi |
+|---|---|
+| [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=99X8UQJQP96WN) | [Support on Ko-fi](https://ko-fi.com/builtbybel) |
+
+small start, same as CCleaner once was
+
 ## FAQ
 
 <details>
@@ -55,6 +109,15 @@ FluentCleaner just gives you more control over what exactly gets cleaned
 
 </details>
 
+<details>
+<summary>FluentCleaner (Modern/WinUI version) shows "Unknown Hard Error" or won't launch</summary>
+
+the modern version requires the exact [Windows App SDK 2.0.1 x64 runtime](https://aka.ms/windowsappsdk/2.0/2.0.1/windowsappruntimeinstall-x64.exe).
+an older or newer Windows App SDK runtime will not work.
+
+after installing it, restart Windows so the runtime can register properly.
+if the problem continues, add the exact error and your Windows version to [issue #85](https://github.com/builtbybel/FluentCleaner/issues/85).
+
 </details>
 
 <details>
@@ -75,8 +138,6 @@ every entry is specific, inspectable, and auditable. that's the whole point.
 winapp2.ini comes in different variants depending on which tool you're using.
 FluentCleaner uses the original CCleaner flavor, the same one that powered
 the tool back when it was still worth using
-
-</details>
 
 </details>
 
@@ -103,6 +164,42 @@ also fluent design is literally in the name. felt right
 
 nothing. FluentCleaner has its own parser, completely independent of CCleaner
 CCleaner dropping support was honestly part of the motivation to build this
+
+</details>
+
+<details>
+
+<summary>can i translate FluentCleaner into my language?</summary>
+
+yes please 🙌 it's built for it. here's the whole process:
+
+1. copy `FluentCleaner/Strings/en-US/Resources.resw`
+2. create `FluentCleaner/Strings/{your-locale}/Resources.resw` (e.g. `fr-FR`, `pt-BR`, `zh-CN`)
+3. translate every `<value>` — **leave the key names (`name="..."`) untouched**
+4. set `LblTranslatorCredit` to your name (add your site if you want the credit)
+5. open a pull request 🎉
+
+two things that trip people up:
+- **don't touch the XML structure** — no editing `<data>`, `<resheader>`, the version header or the `<?xml ...>` line. only the text inside `<value>` gets translated.
+- **this is only for the app UI.** the cleaning databases (winapp2.ini etc.) come from the upstream Winapp2 project and aren't translated here.
+
+save the file as UTF-8 and you're good. don't see your language yet? that just means nobody's done it — could be you 😉
+
+</details>
+
+<details>
+<summary>can i translate FluentCleaner Classic into my language?</summary>
+
+absolutely 🙌 Classic loads its translations from loose JSON files at runtime, so no recompilation is needed.
+
+1. copy `FluentCleaner.Classic/Localization/en.json`
+2. rename it to your locale (e.g. `fr-FR.json`, `pt-BR.json`, `ja-JP.json`)
+3. translate the string values — **keep every key and placeholder such as `{0}` unchanged**
+4. fill in `_Meta_LanguageDisplayName`, `_Meta_TranslatorName` and optionally `_Meta_TranslatorWebsite`
+5. test it from **Options > Settings > Open localization folder**
+6. submit the JSON file through a pull request or GitHub issue 🎉
+
+see the full [Classic translation guide](FluentCleaner.Classic/TRANSLATING_CLASSIC.md) for details.
 
 </details>
 
@@ -135,9 +232,9 @@ issues and feature requests go here on github as usual.
 
 </details>
 
+<a id="task-scheduler"></a>
 <details>
-<summary>can i run FluentCleaner without a UI / from Task Scheduler?</summary>
-
+<summary>Can I run FluentCleaner without a UI / from Task Scheduler?</summary>
 yes.
 
 ```powershell
@@ -247,7 +344,11 @@ if you actually need to clean up after a broken uninstaller;[autoruns](https://l
 
 FluentCleaner targets things that are unambiguously junk;cache files, temp data, leftover logs. it deliberately avoids the feature creep that turned ccleaner from a focused utility into bloatware with a vpn upsell on every launch.
 
+
+
 fewer features. honest features.
+
+</details>
 
 </details>
 

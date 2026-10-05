@@ -58,7 +58,7 @@ public class CliDebloatModule
             case "scan":   await ScanAsync(output, setBusy);          break;
             case "remove": await RemoveAsync(name, output, setBusy);  break;
             default:
-                output.Add("  Usage: appx list | appx scan | appx remove <name> | appx remove all");
+                output.Add(ResourceService.Get("CLI_AppxUsage"));
                 break;
         }
     }
@@ -69,19 +69,19 @@ public class CliDebloatModule
     private async Task ListAllAsync(ObservableCollection<string> output, Action<bool> setBusy)
     {
         setBusy(true);
-        output.Add("  Listing all installed AppX packages...");
+        output.Add(ResourceService.Get("CLI_AppxListStart"));
         var names = await AppxService.GetInstalledNamesAsync();
 
         if (names.Count == 0)
         {
-            output.Add("  No packages found.");
+            output.Add(ResourceService.Get("CLI_AppxNoPackages"));
             setBusy(false);
             return;
         }
 
         foreach (var n in names)
             output.Add($"  {n}");
-        output.Add($"  — {names.Count} package(s) installed. Use 'appx remove <name>' to uninstall.");
+        output.Add(ResourceService.Fmt("CLI_AppxListDone", names.Count));
         setBusy(false);
     }
 
@@ -92,19 +92,19 @@ public class CliDebloatModule
         if (entries.Count == 0) return;
 
         setBusy(true);
-        output.Add("  Scanning installed packages...");
+        output.Add(ResourceService.Get("CLI_AppxScanStart"));
         var found = await AppxService.ScanInstalledAsync(entries);
 
         if (found.Count == 0)
         {
-            output.Add("  Nothing found — system looks clean.");
+            output.Add(ResourceService.Get("CLI_AppxNothingFound"));
             setBusy(false);
             return;
         }
 
         foreach (var e in found)
             output.Add($"  {e.Name}  [{e.PackageName}]");
-        output.Add($"  — {found.Count} package(s) found. Use 'appx remove <name>' or 'appx remove all'.");
+        output.Add(ResourceService.Fmt("CLI_AppxScanDone", found.Count));
         setBusy(false);
     }
 
@@ -113,7 +113,7 @@ public class CliDebloatModule
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            output.Add("  Usage: appx remove <name> | appx remove all");
+            output.Add(ResourceService.Get("CLI_AppxRemoveUsage"));
             return;
         }
 
@@ -124,9 +124,9 @@ public class CliDebloatModule
 
         if (name.Equals("all", StringComparison.OrdinalIgnoreCase))
         {
-            output.Add("  Scanning for installed packages...");
+            output.Add(ResourceService.Get("CLI_AppxRemoveScanStart"));
             targets = await AppxService.ScanInstalledAsync(entries);
-            if (targets.Count == 0) { output.Add("  Nothing to remove."); return; }
+            if (targets.Count == 0) { output.Add(ResourceService.Get("CLI_AppxNothingToRemove")); return; }
         }
         else
         {
@@ -146,16 +146,16 @@ public class CliDebloatModule
         foreach (var e in targets)
         {
             if (e.Warning is not null) output.Add($"  [!] {e.Warning}");
-            output.Add($"  Removing {e.Name}...");
+            output.Add(ResourceService.Fmt("CLI_AppxRemoving", e.Name));
 
             var ok = await AppxService.RemoveAsync(e);
-            if (ok) { output.Add($"  OK  {e.Name} removed."); removed++; }
-            else    output.Add($"  ERR {e.Name} — failed (may not be installed or requires elevation).");
+            if (ok) { output.Add(ResourceService.Fmt("CLI_AppxRemoveOk", e.Name)); removed++; }
+            else    output.Add(ResourceService.Fmt("CLI_AppxRemoveErr", e.Name));
         }
 
         output.Add(removed > 0
-            ? $"  Done — {removed} package(s) removed."
-            : "  Nothing was removed.");
+            ? ResourceService.Fmt("CLI_AppxRemoveDone", removed)
+            : ResourceService.Get("CLI_AppxNothingRemoved"));
         setBusy(false);
     }
 
@@ -169,13 +169,13 @@ public class CliDebloatModule
         if (!AppSettings.Instance.EnableWinappx)
         {
             _entries = null;   // drop cache so re-enable picks up a fresh load
-            output.Add("  Winappx database is disabled — enable it in Settings.");
+            output.Add(ResourceService.Get("CLI_AppxDisabled"));
             return [];
         }
         if (_entries is not null) return _entries;
         if (!File.Exists(WinappxPath))
         {
-            output.Add("  Winappx.ini not found — download it in Settings.");
+            output.Add(ResourceService.Get("CLI_AppxNotFound"));
             return [];
         }
         _entries = await AppxService.ParseDatabaseAsync(WinappxPath);

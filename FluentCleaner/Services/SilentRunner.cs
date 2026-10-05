@@ -25,6 +25,9 @@ public static class SilentRunner
         foreach (var p in paths)
             allEntries.AddRange(await parser.ParseFileAsync(p));
 
+        // Custom/ folder entries;same as the GUI does via CustomEntryService
+        allEntries.AddRange(await new CustomEntryService().LoadEnabledEntriesAsync());
+
         allEntries = allEntries
             .DistinctBy(e => e.Name, StringComparer.OrdinalIgnoreCase)
             .ToList();
@@ -98,7 +101,11 @@ public static class SilentRunner
                     UseShellExecute = false,
                     CreateNoWindow  = true
                 });
-                if (p is not null) await p.WaitForExitAsync();
+                if (p is not null)
+                {
+                    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                    try { await p.WaitForExitAsync(cts.Token); } catch (OperationCanceledException) { }
+                }
             }
             catch { }
         }

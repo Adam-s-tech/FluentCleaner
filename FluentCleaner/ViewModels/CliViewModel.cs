@@ -40,10 +40,10 @@ public partial class CliViewModel : ObservableObject
         var (dbs, entries) = await _cleaner.InitAsync();
         await _appx.InitAsync();   // pre-load Winappx.ini so appx autocomplete works immediately
 
-        Output.Add("FluentCleaner Terminal online.");
-        Output.Add($"Databases: {dbs} active - {entries} detected entries");
+        Output.Add(ResourceService.Get("CLI_Welcome"));
+        Output.Add(ResourceService.Fmt("CLI_Databases", dbs, entries));
         Output.Add(string.Join(", ", new[] { HeaderSpec.WindowsVersion, HeaderSpec.CpuName, HeaderSpec.RamLabel }.Where(s => !string.IsNullOrEmpty(s))));
-        Output.Add("Type 'help' for commands.");
+        Output.Add(ResourceService.Get("CLI_HelpHint"));
         IsBusy = false;
     }
 
@@ -128,11 +128,11 @@ public partial class CliViewModel : ObservableObject
             case "theme":      RunTheme(arg);                                                    break;
             case "backdrop":   RunBackdrop(arg);                                                 break;
             case "drives":     RunDrives();                                                      break;
-            case "version":    Output.Add($"  FluentCleaner {AppInfo.VersionString}");           break;
+            case "version":    Output.Add(ResourceService.Fmt("CLI_Version", AppInfo.VersionString));       break;
             case "clear":      Output.Clear();                                                   break;
             case "help":       RunHelp();                                                        break;
             default:
-                Output.Add($"  Unknown command '{verb}'. Type 'help'.");
+                Output.Add(ResourceService.Fmt("CLI_UnknownCommand", verb));
                 break;
         }
     }
@@ -142,7 +142,7 @@ public partial class CliViewModel : ObservableObject
     private void RunDrives()
     {
         var drives = DriveInfo.GetDrives().Where(d => d.IsReady).ToList();
-        if (drives.Count == 0) { Output.Add("  No drives found."); return; }
+        if (drives.Count == 0) { Output.Add(ResourceService.Get("CLI_NoDrives")); return; }
 
         foreach (var d in drives)
         {
@@ -166,14 +166,14 @@ public partial class CliViewModel : ObservableObject
 
         if (theme == "unknown")
         {
-            Output.Add("  Usage: theme dark | light | system");
+            Output.Add(ResourceService.Get("CLI_ThemeUsage"));
             return;
         }
 
         AppSettings.Instance.Theme = theme;
         AppSettings.Instance.Save();
         (Application.Current as App)?.ApplyTheme(theme);
-        Output.Add($"  Theme set to '{arg}'.");
+        Output.Add(ResourceService.Fmt("CLI_ThemeSet", arg));
     }
 
     // Hidden/experimental visual feature. This intentionally lives in Terminal
@@ -189,14 +189,14 @@ public partial class CliViewModel : ObservableObject
 
         if (value == "")
         {
-            Output.Add("  Usage: backdrop mica | acrylic");
+            Output.Add(ResourceService.Get("CLI_BackdropUsage"));
             return;
         }
 
         AppSettings.Instance.Backdrop = value;
         AppSettings.Instance.Save();
         (Application.Current as App)?.ApplyBackdrop(value);
-        Output.Add($"  Backdrop set to '{value}'.");
+        Output.Add(ResourceService.Fmt("CLI_BackdropSet", value));
     }
 
     private void RunHelp()

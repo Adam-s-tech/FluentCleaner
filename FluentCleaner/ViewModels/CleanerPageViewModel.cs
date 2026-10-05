@@ -28,7 +28,7 @@ public partial class CleanerPageViewModel : ObservableObject
     [ObservableProperty] public partial ObservableCollection<DetailLine>               DetailLines { get; set; } = [];    // right panel: file/registry paths when a result row is open
     [ObservableProperty] public partial ScanResultLine?                                SelectedResultLine { get; set; }   // which result row is currently open in detail view
     [ObservableProperty] public partial string  SearchText { get; set; } = "";                                            // search box
-    [ObservableProperty] public partial string  StatusText { get; set; } = "Loading Winapp2.ini...";                     // status bar at the bottom
+    [ObservableProperty] public partial string  StatusText { get; set; } = ResourceService.Get("St_Loading");                     // status bar at the bottom
     [ObservableProperty] public partial string  TotalSize     { get; set; } = "";                                        // sum of all scan results
     [ObservableProperty] public partial double  ScanProgress  { get; set; }                                               // 0–100; drives the real progress bar
     [ObservableProperty] public partial bool    IsBusy        { get; set; }                                               // locked while a scan or clean is running
@@ -62,8 +62,8 @@ public partial class CleanerPageViewModel : ObservableObject
         if (!string.IsNullOrWhiteSpace(value)) SetAllExpanded(true); //results are useless if they're all collapsed
         RefreshCategoryState();
         StatusText = Categories.Count > 0
-            ? $"Showing {CountVisibleEntries()} matching entries."
-            : "No matching entries.";
+            ? ResourceService.Fmt("St_SearchFound", CountVisibleEntries())
+            : ResourceService.Get("St_SearchNone");
         OnPropertyChanged(nameof(HasSearchText));
     }
 
@@ -110,7 +110,7 @@ public partial class CleanerPageViewModel : ObservableObject
     {
         _lastPaths = [.. filePaths];
         IsBusy     = true;
-        StatusText = "Parsing databases...";
+        StatusText = ResourceService.Get("St_ParsingDatabases");
 
         var allEntries = new List<CleanerEntry>();
         foreach (var path in filePaths)
@@ -127,7 +127,7 @@ public partial class CleanerPageViewModel : ObservableObject
 
         RebuildVisibleCategories();
 
-        StatusText = $"Analysis ready - {_loadedEntries.Count} apps found in {allEntries.Count} entries.";
+        StatusText = ResourceService.Fmt("St_AnalysisReady", _loadedEntries.Count, allEntries.Count);
         RefreshCategoryState();
         IsBusy = false;
     }
@@ -164,9 +164,9 @@ public partial class CleanerPageViewModel : ObservableObject
     {
         // Analyze only what is currently checked in the left pane.
         var selected = GetSelectedEntries();
-        if (selected.Count == 0) { StatusText = "Nothing selected."; return; }
+        if (selected.Count == 0) { StatusText = ResourceService.Get("St_NothingSelected"); return; }
 
-        BeginResultsRun("Scanning...");
+        BeginResultsRun(ResourceService.Get("St_Scanning"));
 
         using var cts = new CancellationTokenSource();
         _cts = cts;
@@ -188,11 +188,11 @@ public partial class CleanerPageViewModel : ObservableObject
                 ScanProgress = ++done * 100.0 / total;                                  //progress per entry
             }
             SortResultLinesBySize(descending: true);  //biggest entries first
-            StatusText = $"Scan complete — {totalFiles} files, {totalReg} registry items ({TotalSize})";
+            StatusText = ResourceService.Fmt("St_ScanComplete", totalFiles, totalReg, TotalSize);
         }
         catch (OperationCanceledException)
         {
-            StatusText = "Scan cancelled.";
+            StatusText = ResourceService.Get("St_ScanCancelled");
             TotalSize  = "";
         }
         finally
@@ -220,7 +220,7 @@ public partial class CleanerPageViewModel : ObservableObject
         IsBusy             = true;
         SelectedResultLine = null;
         ScanProgress       = 0;                                                     // reset from Analyze's 100%
-        StatusText         = "Cleaning...";
+        StatusText         = ResourceService.Get("St_Cleaning");
 
         using var cts = new CancellationTokenSource();
         _cts = cts;
@@ -240,8 +240,8 @@ public partial class CleanerPageViewModel : ObservableObject
 
             TotalSize  = "";
             StatusText = skippedBytes > 0
-                ? $"Finished — {ScanResult.FormatBytes(freedBytes)} freed · {ScanResult.FormatBytes(skippedBytes)} skipped (files in use)"
-                : $"Finished — {removed} items removed · {ScanResult.FormatBytes(freedBytes)} freed.";
+                ? ResourceService.Fmt("St_CleanDone", ScanResult.FormatBytes(freedBytes), ScanResult.FormatBytes(skippedBytes))
+                : ResourceService.Fmt("St_CleanDoneSimple", removed, ScanResult.FormatBytes(freedBytes));
         }
         catch (OperationCanceledException)
         {
@@ -249,8 +249,8 @@ public partial class CleanerPageViewModel : ObservableObject
             //just leaving the remaining results in the list so the user can see what was not cleaned yet
             UpdateTotalsFromLastScan();
             StatusText = freedBytes > 0
-                ? $"Clean cancelled — {ScanResult.FormatBytes(freedBytes)} freed so far."
-                : "Clean cancelled.";
+                ? ResourceService.Fmt("St_CleanCancelledBytes", ScanResult.FormatBytes(freedBytes))
+                : ResourceService.Get("St_CleanCancelled");
         }
         finally
         {
@@ -325,12 +325,12 @@ public partial class CleanerPageViewModel : ObservableObject
             var result = await AnalyzeEntryInternalAsync(entryVm.Entry,
                 new Progress<string>(msg => StatusText = msg), keepDetailSelection: true, cts.Token);
 
-            StatusText = $"{entryVm.Name}: {result.FilesToDelete.Count} files, {result.RegistryToDelete.Count} registry items";
+            StatusText = ResourceService.Fmt("St_EntryScanned", entryVm.Name, result.FilesToDelete.Count, result.RegistryToDelete.Count);
             UpdateTotalsFromLastScan();
         }
         catch (OperationCanceledException)
         {
-            StatusText = "Scan cancelled.";
+            StatusText = ResourceService.Get("St_ScanCancelled");
         }
         finally
         {
@@ -356,7 +356,7 @@ public partial class CleanerPageViewModel : ObservableObject
 
             if (result.FilesToDelete.Count == 0 && result.RegistryToDelete.Count == 0)
             {
-                StatusText = $"{entryVm.Name}: nothing to clean.";
+                StatusText = ResourceService.Fmt("St_EntryNothingToClean", entryVm.Name);
                 return;
             }
 
@@ -365,12 +365,12 @@ public partial class CleanerPageViewModel : ObservableObject
             entryVm.SizeText = "";
 
             UpdateTotalsFromLastScan();
-            StatusText = $"{entryVm.Name}: {removed} items removed · {ScanResult.FormatBytes(freedBytes)} freed.";
+            StatusText = ResourceService.Fmt("St_EntryCleanDone", entryVm.Name, removed, ScanResult.FormatBytes(freedBytes));
         }
         catch (OperationCanceledException)
         {
             UpdateTotalsFromLastScan();
-            StatusText = "Clean cancelled.";
+            StatusText = ResourceService.Get("St_CleanCancelled");
         }
         finally
         {
@@ -386,7 +386,7 @@ public partial class CleanerPageViewModel : ObservableObject
     {
         if (IsBusy) return;
 
-        BeginResultsRun($"Scanning {categoryVm.Name}...");
+        BeginResultsRun(ResourceService.Fmt("St_CategoryScanning", categoryVm.Name));
 
         using var cts = new CancellationTokenSource();
         _cts = cts;
@@ -405,11 +405,11 @@ public partial class CleanerPageViewModel : ObservableObject
             }
 
             UpdateTotalsFromLastScan();
-            StatusText = $"{categoryVm.Name} scanned — {selected.Count} entries.";
+            StatusText = ResourceService.Fmt("St_CategoryScanned", categoryVm.Name, selected.Count);
         }
         catch (OperationCanceledException)
         {
-            StatusText = "Scan cancelled.";
+            StatusText = ResourceService.Get("St_ScanCancelled");
         }
         finally
         {
@@ -425,7 +425,7 @@ public partial class CleanerPageViewModel : ObservableObject
 
         IsBusy             = true;
         SelectedResultLine = null;
-        StatusText         = $"Cleaning {categoryVm.Name}...";
+        StatusText         = ResourceService.Fmt("St_CategoryCleaning", categoryVm.Name);
         var progress       = new Progress<string>(msg => StatusText = msg);
 
         var selected = categoryVm.Entries.Where(e => e.IsSelected).ToList();
@@ -436,7 +436,7 @@ public partial class CleanerPageViewModel : ObservableObject
         var (removed, freedBytes) = await CleanResultsAsync(results, progress);
 
         UpdateTotalsFromLastScan();
-        StatusText = $"{categoryVm.Name}: {removed} items removed · {ScanResult.FormatBytes(freedBytes)} freed.";
+        StatusText = ResourceService.Fmt("St_CategoryCleanDone", categoryVm.Name, removed, ScanResult.FormatBytes(freedBytes));
         IsBusy     = false;
     }
 
@@ -590,7 +590,7 @@ public partial class CleanerPageViewModel : ObservableObject
         var existing = _lastScan.FirstOrDefault(r => r.Entry == entryVm.Entry);
         if (existing is not null) return existing;
 
-        StatusText = $"Scanning {entryVm.Name}...";
+        StatusText = ResourceService.Fmt("St_EntryScanningProgress", entryVm.Name);
         return await AnalyzeEntryInternalAsync(entryVm.Entry, progress, keepDetailSelection: false);
     }
 
@@ -658,8 +658,8 @@ public partial class CleanerPageViewModel : ObservableObject
 
         // The detail panel is just a flattened "header + rows" list.
         // Boring? Yeah, easy to render and reason about? Also yes
-        AddDetailGroup("Files",    result.FilesToDelete);
-        AddDetailGroup("Registry", result.RegistryToDelete.Select(r => r.ToString()));
+        AddDetailGroup(ResourceService.Get("SuffixFiles"),    result.FilesToDelete);
+        AddDetailGroup(ResourceService.Get("SuffixRegistry"), result.RegistryToDelete.Select(r => r.ToString()));
     }
 
     // The detail panel is just header rows plus plain text rows.
@@ -667,6 +667,8 @@ public partial class CleanerPageViewModel : ObservableObject
     {
         var list = lines.ToList();
         if (list.Count == 0) return;
+        //header wants a capital;the raw suffix is lowercase for the "3988 files" line
+        if (title.Length > 0) title = char.ToUpper(title[0]) + title[1..];
         DetailLines.Add(new DetailLine($"{title} ({list.Count})", IsHeader: true));
         foreach (var line in list)
             DetailLines.Add(new DetailLine(line, IsHeader: false));
@@ -741,16 +743,16 @@ public record ScanResultLine(string AppName, int FileCount, int RegCount, string
         get
         {
             var parts = new List<string>();
-            if (FileCount > 0) parts.Add($"{FileCount} files");
-            if (RegCount  > 0) parts.Add($"{RegCount} registry");
+            if (FileCount > 0) parts.Add($"{FileCount} {ResourceService.Get("SuffixFiles")}");
+            if (RegCount  > 0) parts.Add($"{RegCount} {ResourceService.Get("SuffixRegistry")}");
             return string.Join(" · ", parts);
         }
     }
 
     // Compact single-line used in the detail panel header
     public string Summary => FileCount > 0 || RegCount > 0
-        ? $"{FileCount} file(s), {RegCount} registry item(s)  {Size}"
-        : "Cleaning complete.";
+        ? $"{FileCount} {ResourceService.Get("SuffixFilesSingular")}, {RegCount} {ResourceService.Get("SuffixRegistryItems")}  {Size}"
+        : ResourceService.Get("LabelCleaningComplete");
 }
 
 public record DetailLine(string Text, bool IsHeader)

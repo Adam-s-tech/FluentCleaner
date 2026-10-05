@@ -76,7 +76,7 @@ public sealed partial class MainWindow : Window
         {
             PageActionsFlyout.Items.Add(new MenuFlyoutItem
             {
-                Text = "No actions for this page",
+                Text = ResourceService.Get("St_NoActions"),
                 IsEnabled = false
             });
         }

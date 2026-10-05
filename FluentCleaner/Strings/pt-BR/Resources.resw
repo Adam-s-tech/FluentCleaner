@@ -11,7 +11,7 @@
        Each translator fills this in their own Strings\{lang}\Resources.resw,
        e.g.: Translation: Jane Doe · jane.example.com
   ============================================================ -->
-  <data name="LblTranslatorCredit"><value>igorruckert</value></data>
+  <data name="LblTranslatorCredit"><value>Maison da Silva · maisondasilva.com.br</value></data>
 
   <!-- ============================================================
        MAIN WINDOW
@@ -33,7 +33,7 @@
   <!-- ============================================================
        CLEANER PAGE — static XAML strings (x:Uid)
   ============================================================ -->
-  <data name="CleanerHint.Text"><value>O Winapp2.ini é carregando na inicialização.</value></data>
+  <data name="CleanerHint.Text"><value>O Winapp2.ini é carregado automaticamente na inicialização.</value></data>
   <data name="BtnCategoryActions.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Ações da categoria</value></data>
   <data name="MenuSelectAll.Text"><value>Selecionar tudo</value></data>
   <data name="MenuSelectNone.Text"><value>Selecionar nenhum</value></data>
@@ -44,7 +44,9 @@
   <data name="MenuAnalyzeEntry.Text"><value>Analisar</value></data>
   <data name="MenuCleanEntry.Text"><value>Limpar</value></data>
   <data name="MenuExplainEntry.Text"><value>Explicar com IA</value></data>
+  <data name="MenuShowSource.Text"><value>Ver código-fonte</value></data>
   <data name="LblAIDesc.Text"><value>Clique direito em qualquer entrada na página Limpeza → Explicar com IA. Fornecido por Groq (llama-3.3-70b) — grátis, sem pagamento. Nada é enviado sem sua autorização. Requer sua própria chave de API.</value></data>
+  <data name="LblAICustomHint.Text"><value>💡 Após salvar sua chave, a página Limpadores Personalizados também desbloqueia a IA — descreva o que limpar e ela gera uma entrada Winapp2 ou script PowerShell pronto para uso.</value></data>
   <data name="ResultsHeader.Text"><value>Resultados</value></data>
   <data name="BtnBackToResults.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Voltar aos resultados</value></data>
   <data name="BtnCleanDetail.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Excluir esses arquivos agora</value></data>
@@ -86,6 +88,22 @@
   <data name="DlgWarningMessage"><value>As entradas Winapp2 selecionadas incluem os seguintes avisos:</value></data>
   <data name="DlgExplainThinking"><value>Pensando…</value></data>
   <data name="DlgExplainClose"><value>Fechar</value></data>
+  <data name="DlgSourceCopy"><value>Copiar</value></data>
+  <data name="DlgSourceReport"><value>Reportar entrada</value></data>
+  <data name="DlgSourceDryRun"><value>Execução de teste</value></data>
+  <data name="RuleLabTitle"><value>Laboratório de Regras — {0}</value></data>
+  <data name="DlgSourceHint"><value>Edite as regras e clique em Execução de teste para visualizar os resultados.</value></data>
+  <data name="DlgSourceScanning"><value>Verificando…</value></data>
+  <data name="DlgSourceNoEntry"><value>Nenhuma entrada válida — requer um Detect e um FileKey.</value></data>
+  <data name="DlgSourceFound"><value>{0} arquivos · {1}</value></data>
+  <data name="DlgSourceMore"><value>… e mais {0}</value></data>
+  <data name="DlgSourceError"><value>Falha na verificação: {0}</value></data>
+  <data name="DlgSourceCancel"><value>Cancelar</value></data>
+  <data name="DlgSourceCancelled"><value>Cancelado.</value></data>
+  <data name="DlgRestartTitle"><value>Reinicialização necessária</value></data>
+  <data name="DlgRestartMessage"><value>O FluentCleaner precisa reiniciar para aplicar as alterações.</value></data>
+  <data name="DlgRestartNow"><value>Reiniciar agora</value></data>
+  <data name="DlgRestartLater"><value>Depois</value></data>
 
   <!-- ============================================================
        STATUS MESSAGES — CleanerPageViewModel (format strings)
@@ -100,17 +118,17 @@
   <data name="St_ScanComplete"><value>Verificação concluída — {0} arquivos, {1} itens do registro ({2})</value></data>
   <data name="St_ScanCancelled"><value>Verificação cancelada.</value></data>
   <data name="St_Cleaning"><value>Limpando...</value></data>
-  <data name="St_CleanDone"><value>Concluído — {0} limpos · {1} ignorados (arquivos em uso)</value></data>
-  <data name="St_CleanDoneSimple"><value>Concluído — {0} itens removidos · {1} limpos.</value></data>
-  <data name="St_CleanCancelledBytes"><value>Limpeza cancelada — {0} limpos até agora.</value></data>
+  <data name="St_CleanDone"><value>Concluído — {0} de espaço liberado · {1} ignorados (arquivos em uso)</value></data>
+  <data name="St_CleanDoneSimple"><value>Concluído — {0} itens removidos · {1} de espaço liberado.</value></data>
+  <data name="St_CleanCancelledBytes"><value>Limpeza cancelada — {0} de espaço liberado até agora.</value></data>
   <data name="St_CleanCancelled"><value>Limpeza cancelada.</value></data>
   <data name="St_EntryScanned"><value>{0}: {1} arquivos, {2} itens do registro</value></data>
   <data name="St_EntryNothingToClean"><value>{0}: nada para limpar.</value></data>
-  <data name="St_EntryCleanDone"><value>{0}: {1} itens removidos · {2} limpos.</value></data>
+  <data name="St_EntryCleanDone"><value>{0}: {1} itens removidos · {2} de espaço liberado.</value></data>
   <data name="St_CategoryScanning"><value>Verificando {0}...</value></data>
   <data name="St_CategoryScanned"><value>{0} verificados — {1} entradas.</value></data>
   <data name="St_CategoryCleaning"><value>Limpando {0}...</value></data>
-  <data name="St_CategoryCleanDone"><value>{0}: {1} itens removidos · {2} limpos.</value></data>
+  <data name="St_CategoryCleanDone"><value>{0}: {1} itens removidos · {2} de espaço liberado.</value></data>
   <data name="St_EntryScanningProgress"><value>Verificando {0}...</value></data>
   <data name="St_ExcludedFile"><value>Excluído: {0}</value></data>
   <data name="St_ExcludedFolder"><value>Excluída: {0}</value></data>
@@ -149,7 +167,7 @@
   <data name="BtnUpdateWinapp3.Content"><value>Atualizar</value></data>
   <data name="LblWinappx.Text"><value>Winappx</value></data>
   <data name="LblWinappxTag.Text"><value>bloatware</value></data>
-  <data name="LblWinappxDesc.Text"><value>  —  Entradas AppX / bloatware oara o terminal de debloater.</value></data>
+  <data name="LblWinappxDesc.Text"><value>  —  Entradas AppX / bloatware para o terminal debloater.</value></data>
   <data name="BtnDownloadWinappx.Content"><value>Baixar</value></data>
   <data name="BtnUpdateWinappx.Content"><value>Atualizar</value></data>
   <data name="TxtCustomPath.PlaceholderText"><value>Caminho do banco de dados personalizado (.ini)</value></data>
@@ -162,6 +180,9 @@
   <data name="LblPostCleanDesc.Text"><value>Um comando por linha — é executado sequencialmente após cada passagem da limpeza.</value></data>
   <data name="SectionExclusions.Text"><value>Exclusões globais</value></data>
   <data name="LblExclusionsDesc.Text"><value>Os caminhos listados aqui nunca são limpos — substitui todas as regras do banco de dados.</value></data>
+  <data name="LnkProtectedPaths.Content"><value>Ver caminhos protegidos</value></data>
+  <data name="DlgProtectedTitle"><value>Caminhos protegidos</value></data>
+  <data name="DlgProtectedDesc"><value>Esses caminhos são sempre ignorados, independentemente do que o banco de dados diz. Eles contêm dados de extensões de navegador que alguns aplicativos (gerenciadores de senhas, bloqueadores de anúncios) precisam para funcionar.</value></data>
   <data name="SectionHistory.Text"><value>Histórico</value></data>
   <data name="LblHistoryDesc.Text"><value>Acompanhe quanto lixo se acumula ao longo do tempo.</value></data>
   <data name="LblCleanHistory.Text"><value>Histórico de limpeza</value></data>
@@ -172,14 +193,14 @@
   <data name="BtnAIDiscussion.Content"><value>Ideias? Participe da discussão →</value></data>
   <data name="BtnSaveApiKey.Content"><value>Salvar</value></data>
   <data name="BtnTestApiKey.Content"><value>Testar</value></data>
-  <data name="BtnGetApiKey.Content"><value>Obter</value></data>
+  <data name="BtnGetApiKey.Content"><value>Obter chave</value></data>
   <data name="SectionBackup.Text"><value>Backup</value></data>
   <data name="LblBackupDesc.Text"><value>Exporte ou importe suas configurações como um arquivo JSON. Solte o arquivo settings.json próximo ao exe para o modo portátil.</value></data>
   <data name="BtnExport.Content"><value>Exportar</value></data>
   <data name="BtnImport.Content"><value>Importar</value></data>
   <data name="LblPortableActive.Text"><value>📦 Modo portátil ativo — configurações armazenadas ao lado do exe</value></data>
   <data name="SectionAbout.Text"><value>Sobre</value></data>
-  <data name="LblCopyright.Text"><value>© 2026 Uma aplicativo criado por Belim</value></data>
+  <data name="LblCopyright.Text"><value>© 2026 Um aplicativo criado por Belim</value></data>
   <!-- (LblTranslatorCredit is defined at the top of this file) -->
   <data name="BtnGitHub.Content"><value>GitHub</value></data>
   <data name="BtnReportIssue.Content"><value>Informar um problema</value></data>
@@ -191,7 +212,7 @@
   <data name="St_Winapp3NotDownloaded"><value>Winapp3 não baixado ainda — clique em Baixar.</value></data>
   <data name="St_WinappxNotDownloaded"><value>Winappx não baixado ainda — clique em Baixar.</value></data>
   <data name="St_HistoryNone"><value>nenhuma execução registrada ainda</value></data>
-  <data name="St_HistorySummary"><value>{0} execuções · {1} total limpo</value></data>
+  <data name="St_HistorySummary"><value>{0} execuções · {1} de espaço liberado</value></data>
   <data name="St_HistoryItems"><value>{0} itens</value></data>
   <data name="St_FileNotFound"><value>Arquivo não encontrado: {0}</value></data>
   <data name="St_CustomPathSaved"><value>Caminho personalizado salvo.</value></data>
@@ -221,7 +242,8 @@
   <data name="CustomEmptyHint.Text"><value>Nenhum limpador personalizado ainda.</value></data>
   <data name="CustomEmptyHint2.Text"><value>Crie um novo limpador — ele aparecerá aqui automaticamente.</value></data>
   <data name="MenuEditEntry.Text"><value>Editar</value></data>
-  <data name="MenuDeleteEntry.Text"><value>Escluir</value></data>
+  <data name="MenuDeleteEntry.Text"><value>Excluir</value></data>
+  <data name="MenuTestEntry.Text"><value>Testar no Laboratório de Regras</value></data>
   <data name="MenuRunEntry.Text"><value>Executar</value></data>
   <data name="BtnNewCleaner.Content"><value>+ Novo limpador</value></data>
   <data name="BtnRunScript.Text"><value>Executar</value></data>
@@ -241,7 +263,7 @@
   <data name="St_CustomDeleteConfirm"><value>Excluir</value></data>
   <data name="St_CustomDeleteCancel"><value>Cancelar</value></data>
   <data name="St_CustomRunning"><value>Executando {0}...</value></data>
-  <data name="St_CustomScriptError"><value>{0}: não possível ler o script — {1}</value></data>
+  <data name="St_CustomScriptError"><value>{0}: não foi possível ler o script — {1}</value></data>
   <data name="St_CustomCompleted"><value>{0}: concluído com sucesso.</value></data>
   <data name="St_CustomFailed"><value>{0}: falha (saída {1}).</value></data>
   <data name="St_CustomEntryNone"><value>nenhuma entrada analisada</value></data>
@@ -259,8 +281,10 @@
   <data name="DlgNewCleanerNamePlaceholder"><value>Meu Limpador</value></data>
   <data name="DlgNewCleanerAiPlaceholder"><value>Gerar com IA – descreva o que limpar (os resultados podem variar)</value></data>
   <data name="DlgNewCleanerGenerate.Content"><value>Gerar</value></data>
+  <data name="DlgNewCleanerGenerateBtn"><value>Gerar</value></data>
   <data name="DlgNewCleanerContentLabel"><value>Conteúdo</value></data>
   <data name="DlgNewCleanerLoadTemplate.Content"><value>Carregar modelo</value></data>
+  <data name="DlgNewCleanerTest"><value>Testar no Laboratório de Regras</value></data>
   <data name="DlgNewCleanerTitleNew"><value>Novo limpador personalizado</value></data>
   <data name="DlgNewCleanerTitleEdit"><value>Editar — {0}</value></data>
   <data name="DlgNewCleanerGenerating"><value>…</value></data>
@@ -285,12 +309,12 @@
   <data name="CLI_UnknownCommand"><value>  Comando desconhecido '{0}'. Digite 'help'.</value></data>
   <data name="CLI_NoDrives"><value>  Nenhuma unidade encontrada.</value></data>
   <data name="CLI_ThemeUsage"><value>  Uso: theme dark | light | system</value></data>
-  <data name="CLI_ThemeSet"><value>  Tema definido para'{0}'.</value></data>
+  <data name="CLI_ThemeSet"><value>  Tema definido para '{0}'.</value></data>
   <data name="CLI_BackdropUsage"><value>  Uso: backdrop mica | acrylic</value></data>
   <data name="CLI_BackdropSet"><value>  Fundo definido para '{0}'.</value></data>
   <data name="CLI_NoMatch"><value>  Nenhuma entrada correspondente '{0}'.</value></data>
   <data name="CLI_CleanEntry"><value>  {0}: {1} itens · {2}</value></data>
-  <data name="CLI_CleanDone"><value>  Done — {0} itens removidos · {1} limpos.</value></data>
+  <data name="CLI_CleanDone"><value>  Concluído — {0} itens removidos · {1} de espaço liberado.</value></data>
   <data name="CLI_NothingToClean"><value>  Nada para limpar.</value></data>
   <data name="CLI_AnalyzeEntry"><value>  {0}: {1} arquivos · {2} registro · {3}</value></data>
   <data name="CLI_AnalyzeTotal"><value>  Total: {0} encontrados.</value></data>
@@ -304,10 +328,10 @@
   <data name="CLI_AppxScanStart"><value>  Verificando pacotes instalados...</value></data>
   <data name="CLI_AppxNothingFound"><value>  Nada encontrado — o sistema parece limpo.</value></data>
   <data name="CLI_AppxScanDone"><value>  — {0} pacote(s) encontrado(s). Use 'appx remove &lt;name&gt;' ou 'appx remove all'.</value></data>
-  <data name="CLI_AppxRemoveUsage"><value>  Usage: appx remove &lt;name&gt; | appx remove all</value></data>
+  <data name="CLI_AppxRemoveUsage"><value>  Uso: appx remove &lt;name&gt; | appx remove all</value></data>
   <data name="CLI_AppxRemoveScanStart"><value>  Verificando pacotes instalados...</value></data>
   <data name="CLI_AppxNothingToRemove"><value>  Nada para remover.</value></data>
-  <data name="CLI_AppxRemoving"><value>  Removendo0}...</value></data>
+  <data name="CLI_AppxRemoving"><value>  Removendo {0}...</value></data>
   <data name="CLI_AppxRemoveOk"><value>  OK  {0} removido.</value></data>
   <data name="CLI_AppxRemoveErr"><value>  ERR {0} — falha (pode não estar instalado ou requer elevação).</value></data>
   <data name="CLI_AppxRemoveDone"><value>  Concluído — {0} pacote(s) removido(s).</value></data>

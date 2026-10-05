@@ -2,12 +2,16 @@
   <Configurations>
     <Platform Name="ARM64" />
     <Platform Name="x64" />
+    <Platform Name="x86" />
   </Configurations>
   <Project Path="FluentCleaner/FluentCleaner.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
     <Deploy />
   </Project>
+  <Project Path="FluentCleaner.Core/FluentCleaner.Core.csproj" />
+  <Project Path="FluentCleaner.Classic/FluentCleaner.Classic.csproj" />
 </Solution>
 
 

@@ -39,9 +39,9 @@
                 </ScrollViewer>
 
                 <AutoSuggestBox x:Name="InputBox"
+                                x:Uid="TerminalPlaceholder"
                                 Grid.Row="1"
                                 Margin="8,0,8,8"
-                                PlaceholderText="clean firefox  ·  analyze chrome  ·  help"
                                 QueryIcon="Send"
                                 FontFamily="Cascadia Code, Consolas"
                                 FontSize="12"

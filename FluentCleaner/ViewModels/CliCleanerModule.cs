@@ -69,7 +69,7 @@ public class CliCleanerModule
     private async Task RunCleanAsync(string name, ObservableCollection<string> output, Action<bool> setBusy)
     {
         var entries = ResolveEntries(name);
-        if (entries.Count == 0) { output.Add($"  No entries matching '{name}'."); return; }
+        if (entries.Count == 0) { output.Add(ResourceService.Fmt("CLI_NoMatch", name)); return; }
 
         setBusy(true);
         int totalCount = 0; long totalBytes = 0;
@@ -81,12 +81,12 @@ public class CliCleanerModule
             var (count, bytes) = await _cleaner.CleanAsync(result);
             totalCount += count;
             totalBytes += bytes;
-            output.Add($"  {entry.Name}: {count} items · {ScanResult.FormatBytes(bytes)}");
+            output.Add(ResourceService.Fmt("CLI_CleanEntry", entry.Name, count, ScanResult.FormatBytes(bytes)));
         }
 
         output.Add(totalCount > 0
-            ? $"  Done — {totalCount} items removed · {ScanResult.FormatBytes(totalBytes)} freed."
-            : "  Nothing to clean.");
+            ? ResourceService.Fmt("CLI_CleanDone", totalCount, ScanResult.FormatBytes(totalBytes))
+            : ResourceService.Get("CLI_NothingToClean"));
         setBusy(false);
     }
 
@@ -94,7 +94,7 @@ public class CliCleanerModule
     private async Task RunAnalyzeAsync(string name, ObservableCollection<string> output, Action<bool> setBusy)
     {
         var entries = ResolveEntries(name);
-        if (entries.Count == 0) { output.Add($"  No entries matching '{name}'."); return; }
+        if (entries.Count == 0) { output.Add(ResourceService.Fmt("CLI_NoMatch", name)); return; }
 
         setBusy(true);
         long totalBytes = 0;
@@ -104,12 +104,12 @@ public class CliCleanerModule
             var result = await _cleaner.AnalyzeAsync(entry);
             if (result.FilesToDelete.Count == 0 && result.RegistryToDelete.Count == 0) continue;
             totalBytes += result.TotalBytes;
-            output.Add($"  {entry.Name}: {result.FilesToDelete.Count} files · {result.RegistryToDelete.Count} registry · {result.FormattedSize}");
+            output.Add(ResourceService.Fmt("CLI_AnalyzeEntry", entry.Name, result.FilesToDelete.Count, result.RegistryToDelete.Count, result.FormattedSize));
         }
 
         output.Add(totalBytes > 0
-            ? $"  Total: {ScanResult.FormatBytes(totalBytes)} found."
-            : "  Nothing found.");
+            ? ResourceService.Fmt("CLI_AnalyzeTotal", ScanResult.FormatBytes(totalBytes))
+            : ResourceService.Get("CLI_NothingFound"));
         setBusy(false);
     }
 
@@ -121,14 +121,14 @@ public class CliCleanerModule
             : _entries.Where(e => e.Name.Contains(filter, StringComparison.OrdinalIgnoreCase)).ToList();
         foreach (var e in list)
             output.Add($"  {e.Name}");
-        output.Add($"  — {list.Count} entries.");
+        output.Add(ResourceService.Fmt("CLI_ListEntries", list.Count));
     }
 
     private void RunCategories(ObservableCollection<string> output)
     {
         var cats = CategoryNames();
         foreach (var c in cats) output.Add($"  {c}");
-        output.Add($"  — {cats.Count} categories.");
+        output.Add(ResourceService.Fmt("CLI_ListCategories", cats.Count));
     }
 
     // --- Helpers ----------------------------------------------------------------

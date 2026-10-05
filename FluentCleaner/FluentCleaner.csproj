@@ -15,8 +15,8 @@
     <WindowsPackageType>None</WindowsPackageType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>26.05.27</AssemblyVersion>
-    <FileVersion>26.05.27</FileVersion>
+    <AssemblyVersion>26.08.03</AssemblyVersion>
+    <FileVersion>26.08.03</FileVersion>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -28,6 +28,39 @@
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <!-- Shared parsing/cleaning logic lives once in FluentCleaner.Core and is compiled
+       in from there as linked source, not a ProjectReference. A reference would clash
+       on the Services/Models namespaces this app keeps its own copies of (AppSettings,
+       AiExplainer, CleaningService differ by the localized/bound UI bits). -->
+  <ItemGroup>
+    <Compile Include="..\FluentCleaner.Core\Models\CleanerEntry.cs" Link="Models\CleanerEntry.cs" />
+    <Compile Include="..\FluentCleaner.Core\Models\ExcludeKeyEntry.cs" Link="Models\ExcludeKeyEntry.cs" />
+    <Compile Include="..\FluentCleaner.Core\Models\FileKeyEntry.cs" Link="Models\FileKeyEntry.cs" />
+    <Compile Include="..\FluentCleaner.Core\Models\RegKeyEntry.cs" Link="Models\RegKeyEntry.cs" />
+    <Compile Include="..\FluentCleaner.Core\Models\ScanResult.cs" Link="Models\ScanResult.cs" />
+    <Compile Include="..\FluentCleaner.Core\Services\CategoryResolver.cs" Link="Services\CategoryResolver.cs" />
+    <Compile Include="..\FluentCleaner.Core\Services\CustomEntryService.cs" Link="Services\CustomEntryService.cs" />
+    <Compile Include="..\FluentCleaner.Core\Services\DetectionService.cs" Link="Services\DetectionService.cs" />
+    <Compile Include="..\FluentCleaner.Core\Services\PathExpander.cs" Link="Services\PathExpander.cs" />
+    <Compile Include="..\FluentCleaner.Core\Services\RegistryHelpers.cs" Link="Services\RegistryHelpers.cs" />
+    <Compile Include="..\FluentCleaner.Core\Services\Winapp2Parser.cs" Link="Services\Winapp2Parser.cs" />
+  </ItemGroup>
+
+  <!-- Localization: every Strings/{lang}/Resources.resw is compiled into the .pri for       -->
+  <!-- XAML x:Uid resolution. The glob auto-includes any new language folder on the next      -->
+  <!-- build — just drop a Strings/{lang}/Resources.resw and rebuild; no edits needed here.   -->
+  <ItemGroup>
+    <PRIResource Include="Strings\**\*.resw" />
+  </ItemGroup>
+  <!-- Also deploy the raw resw folders next to the exe. The strings still come from the .pri; -->
+  <!-- these copies exist only so the language dropdown can discover available languages at    -->
+  <!-- runtime by scanning Strings\{lang}\ (ResourceService.GetAvailableLanguages).            -->
+  <ItemGroup>
+    <Content Include="Strings\**\*.resw">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

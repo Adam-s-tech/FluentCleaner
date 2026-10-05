@@ -30,11 +30,11 @@
                 <Grid>
                     <!-- Full search -->
                     <AutoSuggestBox x:Name="TitleSearchBox"
+                        x:Uid="SearchBox"
                         MinWidth="160"
                         MaxWidth="280"
                         Width="280"
                         VerticalAlignment="Center"
-                        PlaceholderText="Search"
                         QueryIcon="Find"
                         TextChanged="TitleSearchBox_TextChanged" />
 
@@ -63,8 +63,7 @@
             </TitleBar.Content>
 
             <TitleBar.RightHeader>
-                <Button x:Name="BtnPageActions" Width="32" Height="32" Padding="0"
-                        ToolTipService.ToolTip="Page actions">
+                <Button x:Name="BtnPageActions" x:Uid="BtnPageActions" Width="32" Height="32" Padding="0">
                     <Button.Resources>
                         <SolidColorBrush x:Key="ButtonBackground"             Color="Transparent" />
                         <SolidColorBrush x:Key="ButtonBackgroundPointerOver"  Color="Transparent" />
@@ -93,17 +92,17 @@
                         SelectionChanged="NavView_SelectionChanged">
 
             <NavigationView.MenuItems>
-                <NavigationViewItem Tag="Cleaner" Content="Cleaner" IsSelected="True">
+                <NavigationViewItem x:Uid="NavCleaner" Tag="Cleaner" IsSelected="True">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xEA99;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Tag="Terminal" Content="Terminal">
+                <NavigationViewItem x:Uid="NavTerminal" Tag="Terminal">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE943;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Tag="Custom" Content="Custom">
+                <NavigationViewItem x:Uid="NavCustom" Tag="Custom">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE710;" />
                     </NavigationViewItem.Icon>
@@ -114,22 +113,21 @@
         </NavigationView>
         <!-- donation prompt; anchored to the [...] button -->
         <TeachingTip x:Name="DonationTip"
+                     x:Uid="DonationBanner"
                      Target="{x:Bind BtnPageActions}"
-                     Title="Enjoying FluentCleaner?"
-                     Subtitle="If this app saves you time, consider supporting its development."
                      PreferredPlacement="BottomLeft"
                      IsLightDismissEnabled="False">
             <TeachingTip.Content>
                 <StackPanel Spacing="6" Margin="0,4,0,0">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="PayPal" Click="DonationTip_PayPal"
+                        <Button x:Uid="BtnDonatePayPal" Click="DonationTip_PayPal"
                                 Style="{StaticResource AccentButtonStyle}" />
-                        <Button Content="Ko-fi" Click="DonationTip_KoFi" />
+                        <Button x:Uid="BtnDonateKoFi" Click="DonationTip_KoFi" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Spacing="12">
-                        <HyperlinkButton Content="Star on GitHub" Click="DonationTip_Star"
+                        <HyperlinkButton x:Uid="BtnDonateGitHub" Click="DonationTip_Star"
                                          Padding="0" FontSize="12" />
-                        <HyperlinkButton Content="Maybe later" Click="DonationTip_Dismiss"
+                        <HyperlinkButton x:Uid="BtnDonateLater" Click="DonationTip_Dismiss"
                                          Padding="0" FontSize="12"
                                          Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     </StackPanel>

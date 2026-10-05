@@ -117,8 +117,8 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
         var enabledCount = iniEntries.Count(e => e.IsEnabled);
 
         var parts = new List<string>();
-        if (iniEntries.Count > 0) parts.Add($"{iniEntries.Count} cleaner · {enabledCount} enabled");
-        if (scriptCount > 0)      parts.Add($"{scriptCount} script{(scriptCount > 1 ? "s" : "")}");
+        if (iniEntries.Count > 0) parts.Add(ResourceService.Fmt("St_CustomStatus", iniEntries.Count, enabledCount));
+        if (scriptCount > 0)      parts.Add(ResourceService.Fmt("St_CustomStatusScripts", scriptCount));
 
         lblStatus.Text = parts.Count > 0 ? string.Join(" · ", parts) : "";
     }
@@ -127,11 +127,11 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
 
     public void BuildActions(MenuFlyout flyout)
     {
-        var newItem = new MenuFlyoutItem { Text = "New custom cleaner" };
+        var newItem = new MenuFlyoutItem { Text = ResourceService.Get("St_CustomMenuNew") };
         newItem.Click += async (_, _) => await ShowEditorAsync(null);
         flyout.Items.Add(newItem);
 
-        var openFolder = new MenuFlyoutItem { Text = "Open Custom folder" };
+        var openFolder = new MenuFlyoutItem { Text = ResourceService.Get("St_CustomMenuOpenFolder") };
         openFolder.Click += (_, _) =>
         {
             Directory.CreateDirectory(CustomDir);
@@ -152,11 +152,11 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
             flyout.Items.Add(item);
         }
 
-        AddLink("Ask on Reddit",         AppLinks.Reddit);
-        AddLink("Neowin forums",         AppLinks.Neowin);
-        AddLink("Deskmodder.de",         AppLinks.Deskmodder);
+        AddLink(ResourceService.Get("St_CustomMenuReddit"),    AppLinks.Reddit);
+        AddLink(ResourceService.Get("St_CustomMenuNeowin"),    AppLinks.Neowin);
+        AddLink(ResourceService.Get("St_CustomMenuDeskmodder"),AppLinks.Deskmodder);
         flyout.Items.Add(new MenuFlyoutSeparator());
-        AddLink("Share cleaner on GitHub",              AppLinks.ShareCleaner);
+        AddLink(ResourceService.Get("St_CustomMenuShare"),     AppLinks.ShareCleaner);
     }
 
     // counts [SectionHeaders] in the file as a quick proxy for entry count
@@ -203,7 +203,7 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
         }
         catch (Exception ex)
         {
-            lblStatus.Text = $"Toggle failed: {ex.Message}";
+            lblStatus.Text = ResourceService.Fmt("St_CustomToggleFailed", ex.Message);
         }
     }
 
@@ -218,6 +218,22 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
             await ShowEditorAsync(vm);
     }
 
+    // opens the ini in the Rule Lab so you can dry-run it right after building
+    private async void TestInLab_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not MenuFlyoutItem { Tag: CustomEntryVm vm } || vm.IsScript) return;
+
+        string content;
+        try   { content = await File.ReadAllTextAsync(vm.FilePath); }
+        catch (Exception ex)
+        {
+            lblStatus.Text = ResourceService.Fmt("St_CustomScriptError", vm.Name, ex.Message);
+            return;
+        }
+
+        new RuleLabWindow(vm.Name, content, ActualTheme).Activate();
+    }
+
     private async void Delete_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not MenuFlyoutItem { Tag: CustomEntryVm vm }) return;
@@ -227,10 +243,10 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
             XamlRoot          = XamlRoot,
             RequestedTheme    = ActualTheme,
             CornerRadius      = new CornerRadius(8),
-            Title             = $"Delete \"{vm.Name}\"?",
-            Content           = "This removes the custom cleaner permanently.",
-            PrimaryButtonText = "Delete",
-            CloseButtonText   = "Cancel",
+            Title             = ResourceService.Fmt("St_CustomDeleteTitle", vm.Name),
+            Content           = ResourceService.Get("St_CustomDeleteMessage"),
+            PrimaryButtonText = ResourceService.Get("St_CustomDeleteConfirm"),
+            CloseButtonText   = ResourceService.Get("St_CustomDeleteCancel"),
             DefaultButton     = ContentDialogButton.Close
         };
 
@@ -244,7 +260,7 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
     {
         if (sender is not Button { Tag: CustomEntryVm vm } || !vm.IsScript) return;
 
-        lblStatus.Text = $"Running {vm.Name}...";
+        lblStatus.Text = ResourceService.Fmt("St_CustomRunning", vm.Name);
         int exitCode = -1;
 
         void Report(string line) =>
@@ -255,7 +271,7 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
         try   { scriptContent = await File.ReadAllTextAsync(vm.FilePath); }
         catch (Exception ex)
         {
-            lblStatus.Text = $"{vm.Name}: could not read script — {ex.Message}";
+            lblStatus.Text = ResourceService.Fmt("St_CustomScriptError", vm.Name, ex.Message);
             return;
         }
 
@@ -293,8 +309,8 @@ public sealed partial class CustomPage : Page, IPageActions, ISearchablePage
         }
 
         lblStatus.Text = exitCode == 0
-            ? $"{vm.Name}: completed successfully."
-            : $"{vm.Name}: failed (exit {exitCode}).";
+            ? ResourceService.Fmt("St_CustomCompleted", vm.Name)
+            : ResourceService.Fmt("St_CustomFailed", vm.Name, exitCode);
     }
 
     private async Task ShowEditorAsync(CustomEntryVm? existing)
@@ -345,9 +361,9 @@ public sealed class CustomEntryVm : ObservableObject
 
     public string StatusText => EntryCount switch
     {
-        0 => "no entries parsed",
-        1 => $"1 entry · {(IsEnabled ? "enabled" : "disabled")}",
-        _ => $"{EntryCount} entries · {(IsEnabled ? "enabled" : "disabled")}"
+        0 => ResourceService.Get("St_CustomEntryNone"),
+        1 => ResourceService.Fmt("St_CustomEntryOne", ResourceService.Get(IsEnabled ? "St_CustomEntryEnabled" : "St_CustomEntryDisabled")),
+        _ => ResourceService.Fmt("St_CustomEntryMany", EntryCount, ResourceService.Get(IsEnabled ? "St_CustomEntryEnabled" : "St_CustomEntryDisabled"))
     };
 
     public event EventHandler<bool>? IsEnabledChanged;

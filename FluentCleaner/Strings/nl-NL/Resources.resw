@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- ============================================================
+       TRANSLATOR CREDIT
+       Leave the value empty in the source (en-US) file.
+       Each translator fills this in their own Strings\{lang}\Resources.resw,
+       e.g.: Translation: Rijckaert Alex - België
+  ============================================================ -->
+  <data name="LblTranslatorCredit"><value>Vertaling : Rijckaert Alex - België</value></data>
+
+  <!-- ============================================================
+       MAIN WINDOW
+  ============================================================ -->
+  <data name="NavCleaner.Content"><value>Cleaner</value></data>
+  <data name="NavTerminal.Content"><value>Terminal</value></data>
+  <data name="NavCustom.Content"><value>Aangepast</value></data>
+  <data name="SearchBox.PlaceholderText"><value>Zoeken</value></data>
+  <data name="BtnPageActions.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Pagina-acties</value></data>
+  <!-- Main Window — donation TeachingTip -->
+  <data name="DonationBanner.Title"><value>Bevalt FluentCleaner je?</value></data>
+  <data name="DonationBanner.Subtitle"><value>Als deze app je tijd bespaart, overweeg dan om de ontwikkeling ervan te steunen.</value></data>
+  <data name="BtnDonatePayPal.Content"><value>PayPal</value></data>
+  <data name="BtnDonateKoFi.Content"><value>Ko-fi</value></data>
+  <data name="BtnDonateGitHub.Content"><value>Ster op GitHub</value></data>
+  <data name="BtnDonateLater.Content"><value>Misschien later</value></data>
+  <data name="St_NoActions"><value>Geen acties voor deze pagina</value></data>
+
+  <!-- ============================================================
+       CLEANER PAGE — static XAML strings (x:Uid)
+  ============================================================ -->
+  <data name="CleanerHint.Text"><value>Winapp2.ini laadt automatisch bij het opstarten.</value></data>
+  <data name="BtnCategoryActions.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Categorie-acties</value></data>
+  <data name="MenuSelectAll.Text"><value>Alles selecteren</value></data>
+  <data name="MenuSelectNone.Text"><value>Niets selecteren</value></data>
+  <data name="MenuSelectDefaults.Text"><value>Selecteer standaarden</value></data>
+  <data name="MenuAnalyzeCategory.Text"><value>Analyseer categorie</value></data>
+  <data name="MenuCleanCategory.Text"><value>Categorie opschonen</value></data>
+  <data name="BtnEntryActions.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Invoeracties</value></data>
+  <data name="MenuAnalyzeEntry.Text"><value>Analyseren</value></data>
+  <data name="MenuCleanEntry.Text"><value>Opruimen</value></data>
+  <data name="MenuExplainEntry.Text"><value>Uitleggen met AI</value></data>
+  <data name="MenuShowSource.Text"><value>Bron weergeven</value></data>
+  <data name="LblAIDesc.Text"><value>Rechtsklik op een willekeurig item op de Cleaner-pagina → Uitleggen met AI. Kies Groq, OpenAI of Anthropic. Er wordt niets verzonden zonder dat je daar expliciet toestemming voor geeft. Je hebt hiervoor je eigen API-sleutel nodig.</value></data>
+  <data name="LblAICustomHint.Text"><value>💡 Zodra je sleutel is opgeslagen, wordt op de pagina Aangepaste cleaners ook de AI-functie ontgrendeld: beschrijf wat op te schonen en de functie genereert een kant-en-klare Winapp2-vermelding of een PowerShell-script voor je.</value></data>
+  <data name="ResultsHeader.Text"><value>Resultaten</value></data>
+  <data name="BtnBackToResults.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Terug naar resultaten</value></data>
+  <data name="BtnCleanDetail.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Verwijder deze bestanden nu</value></data>
+  <data name="MenuExcludeFile.Text"><value>Bestand uitsluiten</value></data>
+  <data name="MenuExcludeFolder.Text"><value>Map uitsluiten</value></data>
+  <data name="BtnAnalyze.Content"><value>Analyseren</value></data>
+  <data name="BtnCancel.Content"><value>Annuleren</value></data>
+  <data name="BtnRunCleaner.Content"><value>Cleaner uitvoeren</value></data>
+
+  <!-- Cleaner Page — IPageActions (built in code) -->
+  <data name="St_MenuSelectAll"><value>Alles selecteren</value></data>
+  <data name="St_MenuSelectNone"><value>Niets selecteren</value></data>
+  <data name="St_MenuSelectDefaults"><value>Standaarden selecteren</value></data>
+  <data name="St_MenuExpandAll"><value>Alles uitvouwen</value></data>
+  <data name="St_MenuCollapseAll"><value>Alles samenvouwen</value></data>
+  <data name="St_MenuSortDesc"><value>Sorteren op grootte ↓</value></data>
+  <data name="St_MenuSortAsc"><value>Sorteren op grootte ↑</value></data>
+  <data name="St_MenuRefresh"><value>Vernieuwen</value></data>
+
+  <!-- Cleaner Page — detail view labels -->
+  <data name="DetailHeaderFiles.Text"><value>Bestanden</value></data>
+  <data name="DetailHeaderRegistry.Text"><value>Register</value></data>
+
+  <!-- Cleaner Page — result line suffixes (used in code) -->
+  <data name="SuffixFiles"><value>bestanden</value></data>
+  <data name="SuffixRegistry"><value>register</value></data>
+  <data name="SuffixFilesSingular"><value>bestand(en)</value></data>
+  <data name="SuffixRegistryItems"><value>register item(s)</value></data>
+  <data name="LabelCleaningComplete"><value>Opruimen voltooid.</value></data>
+
+  <!-- Cleaner Page — dialogs -->
+  <data name="DlgBrowsersTitle"><value>Browsers actief</value></data>
+  <data name="DlgBrowsersContinue"><value>Toch doorgaan</value></data>
+  <data name="DlgBrowsersCancel"><value>Annuleren</value></data>
+  <data name="DlgBrowsersMessage"><value>Sluit deze apps voor het beste resultaat:\n{0}\n\nIn geopende browsers worden cache- en geschiedenisbestanden vergrendeld — deze worden tijdens het opschonen overgeslagen.</value></data>
+  <data name="DlgWarningTitle"><value>Opruim waarschuwing</value></data>
+  <data name="DlgWarningContinue"><value>Ga verder</value></data>
+  <data name="DlgWarningCancel"><value>Annuleren</value></data>
+  <data name="DlgWarningMessage"><value>De geselecteerde Winapp2-vermeldingen bevatten de volgende waarschuwingen:</value></data>
+  <data name="DlgExplainThinking"><value>Denken...</value></data>
+  <data name="DlgExplainClose"><value>Sluiten</value></data>
+  <data name="DlgSourceCopy"><value>Kopiëren</value></data>
+  <data name="DlgSourceReport"><value>Rapport-vermelding</value></data>
+  <data name="DlgSourceDryRun"><value>Proefdraaien</value></data>
+  <data name="RuleLabTitle"><value>Rule Lab — {0}</value></data>
+  <data name="DlgSourceHint"><value>Pas de regels aan en doe een proefdraai om een voorbeeld van de resultaten te bekijken.</value></data>
+  <data name="DlgSourceScanning"><value>Scannen…</value></data>
+  <data name="DlgSourceNoEntry"><value>Geen geldige invoer — er is een Detect en een FileKey nodig.</value></data>
+  <data name="DlgSourceFound"><value>{0} bestanden · {1}</value></data>
+  <data name="DlgSourceMore"><value>… en nog {0} meer</value></data>
+  <data name="DlgSourceError"><value>Scan mislukt: {0}</value></data>
+  <data name="DlgSourceCancel"><value>Annuleren</value></data>
+  <data name="DlgSourceCancelled"><value>Geannuleerd.</value></data>
+  <data name="DlgRestartTitle"><value>Herstart vereist</value></data>
+  <data name="DlgRestartMessage"><value>FluentCleaner moet opnieuw opstarten om de wijzigingen door te voeren.</value></data>
+  <data name="DlgRestartNow"><value>Herstart nu</value></data>
+  <data name="DlgRestartLater"><value>Later</value></data>
+
+  <!-- ============================================================
+       STATUS MESSAGES — CleanerPageViewModel (format strings)
+  ============================================================ -->
+  <data name="St_Loading"><value>Winapp2.ini laden. . .</value></data>
+  <data name="St_SearchFound"><value>Weergave {0} overeenkomende resultaten.</value></data>
+  <data name="St_SearchNone"><value>Geen passende resultaten.</value></data>
+  <data name="St_ParsingDatabases"><value>Databases analyseren...</value></data>
+  <data name="St_AnalysisReady"><value>Analyse voltooid — {0} apps gevonden in {1} vermeldingen.</value></data>
+  <data name="St_NothingSelected"><value>Niets geselecteerd.</value></data>
+  <data name="St_Scanning"><value>Scannen...</value></data>
+  <data name="St_ScanComplete"><value>Scannen voltooid — {0} bestanden, {1} registeritems ({2})</value></data>
+  <data name="St_ScanCancelled"><value>Scan geannuleerd.</value></data>
+  <data name="St_Cleaning"><value>Opruimen...</value></data>
+  <data name="St_CleanDone"><value>Voltooid — {0} vrijgemaakt · {1} overgeslagen (bestanden in gebruik)</value></data>
+  <data name="St_CleanDoneSimple"><value>Klaar — {0} items verwijderd · {1} vrijgemaakt.</value></data>
+  <data name="St_CleanCancelledBytes"><value>Opschonen geannuleerd — {0} tot nu toe vrijgemaakt.</value></data>
+  <data name="St_CleanCancelled"><value>Opschonen geannuleerd.</value></data>
+  <data name="St_EntryScanned"><value>{0}: {1} bestanden, {2} registervermeldingen</value></data>
+  <data name="St_EntryNothingToClean"><value>{0}: niets op te ruimen</value></data>
+  <data name="St_EntryCleanDone"><value>{0}: {1} items verwijderd· {2} vrijgemaakt.</value></data>
+  <data name="St_CategoryScanning"><value>Scannen {0}...</value></data>
+  <data name="St_CategoryScanned"><value>{0} gescand — {1} vermeldingen.</value></data>
+  <data name="St_CategoryCleaning"><value>Opschonen {0}...</value></data>
+  <data name="St_CategoryCleanDone"><value>{0}: {1} items verwijderd· {2} vrijgemaakt.</value></data>
+  <data name="St_EntryScanningProgress"><value>Scannen {0}...</value></data>
+  <data name="St_ExcludedFile"><value>Uitgesloten: {0}</value></data>
+  <data name="St_ExcludedFolder"><value>Uitgesloten: {0}</value></data>
+
+  <!-- CleaningService progress messages -->
+  <data name="Prog_Deleted"><value>Verwijderd: {0}</value></data>
+  <data name="Prog_Registry"><value>Register: {0}</value></data>
+
+  <!-- ============================================================
+       SETTINGS PAGE — static XAML strings (x:Uid)
+  ============================================================ -->
+  <data name="SettingsTitle.Text"><value>Instellingen</value></data>
+  <!-- Settings Page — donation InfoBar -->
+  <data name="DonationBar.Title"><value>FluentCleaner wordt open source.</value></data>
+  <data name="DonationBar.Message"><value>Ik heb hier veel werk in gestoken — als je er iets aan hebt en wilt bedanken, dan zou een donatie veel voor mij betekenen. ♥</value></data>
+  <data name="BtnDonate.Content"><value>Steun het project</value></data>
+  <data name="MenuDonatePayPal.Text"><value>Doneer via PayPal</value></data>
+  <data name="MenuDonateKoFi.Text"><value>Doneer via Ko-fi</value></data>
+  <data name="SectionAppearance.Text"><value>Uiterlijk</value></data>
+  <data name="LblTheme.Text"><value>App-thema</value></data>
+  <data name="LblThemeDesc.Text"><value>Kies hoe FluentCleaner er op je apparaat uitziet.</value></data>
+  <data name="ThemeSystem.Content"><value>Systeemstandaard</value></data>
+  <data name="ThemeLight.Content"><value>Light</value></data>
+  <data name="ThemeDark.Content"><value>Donker</value></data>
+  <data name="LblLanguage.Text"><value>Taal</value></data>
+  <data name="LblLanguageDesc.Text"><value>Overschrijf de weergavetaal. Opnieuw opstarten is vereist.</value></data>
+  <data name="St_LangAuto"><value>Systeemstandaard</value></data>
+  <data name="SectionDatabase.Text"><value>Database</value></data>
+  <data name="LblDatabaseDesc.Text"><value>Kies welke invoerlijsten worden geladen voor het scannen en opschonen.</value></data>
+  <data name="LblWinapp2.Text"><value>Winapp2</value></data>
+  <data name="BtnUpdateWinapp2.Content"><value>Update</value></data>
+  <data name="LblWinapp3.Text"><value>Winapp3</value></data>
+  <data name="LblWinapp3Tag.Text"><value>experimenteel</value></data>
+  <data name="LblWinapp3Desc.Text"><value>  —  meer agressieve ingaves, gebruik op eigen risico.</value></data>
+  <data name="BtnDownloadWinapp3.Content"><value>Download</value></data>
+  <data name="BtnUpdateWinapp3.Content"><value>Update</value></data>
+  <data name="LblWinappx.Text"><value>Winappx</value></data>
+  <data name="LblWinappxTag.Text"><value>bloatware</value></data>
+  <data name="LblWinappxDesc.Text"><value>  —  AppX / bloatware-items voor de terminal debloater.</value></data>
+  <data name="BtnDownloadWinappx.Content"><value>Download</value></data>
+  <data name="BtnUpdateWinappx.Content"><value>Update</value></data>
+  <data name="TxtCustomPath.PlaceholderText"><value>Aangepast database-path (.ini)</value></data>
+  <data name="BtnBrowse.Content"><value>Bladeren…</value></data>
+  <data name="BtnApplyPath.Content"><value>Toepassen</value></data>
+  <data name="BtnRemovePath.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip"><value>Aangepaste database verwijderen</value></data>
+  <data name="RestartBar.Title"><value>Herstart vereist</value></data>
+  <data name="RestartBar.Message"><value>Start FluentCleaner opnieuw om de bijgewerkte database te laden.</value></data>
+  <data name="SectionPostClean.Text"><value>Taken na opruimen</value></data>
+  <data name="LblPostCleanDesc.Text"><value>Een opdracht per regel — wordt na elke opschoonronde achtereenvolgens uitgevoerd.</value></data>
+  <data name="SectionExclusions.Text"><value>Algemene uitsluitingen</value></data>
+  <data name="LblExclusionsDesc.Text"><value>Hier vermelde paths worden nooit opgeschoond — overschrijft alle databaseregels.</value></data>
+  <data name="LnkProtectedPaths.Content"><value>Beveiligde paths weergeven</value></data>
+  <data name="DlgProtectedTitle"><value>Beveiligde paths</value></data>
+  <data name="DlgProtectedDesc"><value>Deze worden altijd overgeslagen, ongeacht wat de database aangeeft. Ze bevatten gegevens van browserextensies die sommige apps (wachtwoordbeheerders, advertentieblokkers) anders niet goed werken.</value></data>
+  <data name="SectionHistory.Text"><value>Geschiedenis</value></data>
+  <data name="LblHistoryDesc.Text"><value>Bijhouden hoeveel rommel zich in verloop van tijd opstapelt</value></data>
+  <data name="LblCleanHistory.Text"><value>Wis geschiedenis</value></data>
+  <data name="BtnClearHistory.Content"><value>Wis geschiedenis</value></data>
+  <data name="SectionScheduler.Text"><value>Geplande opschoning</value></data>
+  <data name="LblSchedulerDesc.Text"><value>Voert dezelfde opschoning uit als /AUTO via de Taakplanner van Windows. De taak wordt alleen uitgevoerd terwijl je bent aangemeld en vereist geen beheerdersrechten.</value></data>
+  <data name="SchedulerEnabled.Header"><value>Geplande opruiming inschakelen</value></data>
+  <data name="SchedulerFrequency.Header"><value>Frequentie</value></data>
+  <data name="SchedulerTime.Header"><value>Tijd</value></data>
+  <data name="SchedulerShutdown.Content"><value>Schakel de pc daarna uit</value></data>
+  <data name="SchedulerApply.Content"><value>Toepassen</value></data>
+  <data name="SchedulerOpen.Content"><value>Open de Windows Taakplanner</value></data>
+  <data name="SectionAI.Text"><value>AI uitleg</value></data>
+  <data name="LblAIOptIn.Text"><value>opt-in</value></data>
+  <data name="LblAIPreview.Text"><value>voorbeeld</value></data>
+  <data name="BtnAIDiscussion.Content"><value>Nog ideeën? Doe mee aan de discussie →</value></data>
+  <data name="CboAIProvider.Header"><value>Aanbieder</value></data>
+  <data name="BtnSaveApiKey.Content"><value>Opslaan</value></data>
+  <data name="BtnTestApiKey.Content"><value>Test</value></data>
+  <data name="BtnGetApiKey.Content"><value>Sleutel ophalen</value></data>
+  <data name="SectionBackup.Text"><value>Backup</value></data>
+  <data name="LblBackupDesc.Text"><value>Exporteer of importeer je instellingen als een JSON-bestand. Plaats een settings.json-bestand naast het exe-bestand voor de draagbare modus.</value></data>
+  <data name="BtnExport.Content"><value>Exporteren</value></data>
+  <data name="BtnImport.Content"><value>Importeren</value></data>
+  <data name="LblPortableActive.Text"><value>📦 Draagbare modus actief — instellingen opgeslagen naast het exe-bestand</value></data>
+  <data name="SectionAbout.Text"><value>Over</value></data>
+  <data name="LblCopyright.Text"><value>© 2026 Een Belim-app maken</value></data>
+  <!-- (LblTranslatorCredit is defined at the top of this file) -->
+  <data name="BtnGitHub.Content"><value>GitHub</value></data>
+  <data name="BtnReportIssue.Content"><value>Een probleem melden</value></data>
+  <data name="BtnIconCredit.Content"><value>App-pictogram door naderi</value></data>
+  <data name="BtnFAQ.Content"><value>FAQ</value></data>
+  <data name="LblInsiderBadge.Text"><value>INSIDER</value></data>
+
+  <!-- Settings Page — code strings -->
+  <data name="St_Winapp3NotDownloaded"><value>Winapp3 is nog niet gedownload — klik Downloaden.</value></data>
+  <data name="St_WinappxNotDownloaded"><value>Winappx is nog niet gedownload — klik Downloaden.</value></data>
+  <data name="St_HistoryNone"><value>nog geen runs geregistreerd</value></data>
+  <data name="St_HistorySummary"><value>{0} uitgevoerd · {1} totaal vrijgemaakt</value></data>
+  <data name="St_HistoryItems"><value>{0} items</value></data>
+  <data name="St_FileNotFound"><value>Bestand niet gevonden: {0}</value></data>
+  <data name="St_CustomPathSaved"><value>Aangepast path opgeslagen.</value></data>
+  <data name="St_Download"><value>Download</value></data>
+  <data name="St_Downloading"><value>Downloaden {0}…</value></data>
+  <data name="St_Downloaded"><value>{0} gedownload — {1} KB</value></data>
+  <data name="St_DownloadFailed"><value>Download mislukt: {0}</value></data>
+  <data name="St_FileInfoNotDownloaded"><value>Niet gedownload</value></data>
+  <data name="St_FileInfo"><value>{0} vermeldingen  •  {1} KB  •  {2}</value></data>
+  <data name="St_UpdateAvailable"><value>Update beschikbaar — {0}</value></data>
+  <data name="St_UpdateMessage"><value>Een nieuwe versie van FluentCleaner klaar om te worden gedownload.</value></data>
+  <data name="St_UpToDate"><value>Je bent up-to-date</value></data>
+  <data name="St_UpToDateMessage"><value>Versie {0} is de nieuwste.</value></data>
+  <data name="St_MenuUpdate"><value>⬆  Update beschikbaar — {0}</value></data>
+  <data name="St_MenuCheckUpdates"><value>Controleer op updates</value></data>
+  <data name="St_ApiKeyMissing"><value>⚠ Voer eerst een API-sleutel in.</value></data>
+  <data name="St_ApiKeyTesting"><value>Testen…</value></data>
+  <data name="Scheduler_FreqDaily"><value>Dagelijks</value></data>
+  <data name="Scheduler_FreqWeekly"><value>Wekelijks (maandag)</value></data>
+  <data name="Scheduler_FreqLogon"><value>Bij inloggen</value></data>
+  <data name="Scheduler_StatusActive"><value>✓ Geplande taak is actief.</value></data>
+  <data name="Scheduler_StatusInactive"><value>✗ Niet gepland.</value></data>
+  <data name="Scheduler_Applying"><value>Toepassen…</value></data>
+  <data name="Scheduler_ErrorExecutablePath"><value>Kan het uitvoerbare path van FluentCleaner niet vinden.</value></data>
+  <data name="Scheduler_ResultCreated"><value>Geplande taak aangemaakt.</value></data>
+  <data name="Scheduler_ResultNothingToRemove"><value>Niets te verwijderen.</value></data>
+  <data name="Scheduler_ResultRemoved"><value>Geplande taak verwijderd.</value></data>
+  <data name="Scheduler_ErrorSchtasks"><value>Windows Task Scheduler failed.</value></data>
+  <data name="St_ExportSuccess"><value>Instellingen geëxporteerd naar {0}</value></data>
+  <data name="St_ExportFailed"><value>Exporteren mislukt: {0}</value></data>
+  <data name="St_ImportSuccess"><value>Instellingen geïmporteerd uit {0}</value></data>
+  <data name="St_ImportFailed"><value>Importeren mislukt: {0}</value></data>
+
+  <!-- ============================================================
+       CUSTOM PAGE — static XAML strings (x:Uid)
+  ============================================================ -->
+  <data name="CustomTitle.Text"><value>Aangepaste Cleaners</value></data>
+  <data name="CustomEmptyHint.Text"><value>Nog geen aangepaste cleaners.</value></data>
+  <data name="CustomEmptyHint2.Text"><value>Maak een nieuwe cleaner aan — deze verschijnt automatisch hier.</value></data>
+  <data name="MenuEditEntry.Text"><value>Bewerken</value></data>
+  <data name="MenuDeleteEntry.Text"><value>Wissen</value></data>
+  <data name="MenuTestEntry.Text"><value>Test in Rule Lab</value></data>
+  <data name="MenuRunEntry.Text"><value>Start</value></data>
+  <data name="BtnNewCleaner.Content"><value>+ Nieuwe Cleaner</value></data>
+  <data name="BtnRunScript.Text"><value>Start</value></data>
+
+  <!-- Custom Page — code strings -->
+  <data name="St_CustomStatus"><value>{0} cleaner · {1} ingeschakeld</value></data>
+  <data name="St_CustomStatusScripts"><value>{0} script(s)</value></data>
+  <data name="St_CustomMenuNew"><value>Nieuwe aangepaste cleaner</value></data>
+  <data name="St_CustomMenuOpenFolder"><value>Aangepaste map openen</value></data>
+  <data name="St_CustomMenuReddit"><value>Vraag het op Reddit</value></data>
+  <data name="St_CustomMenuNeowin"><value>Neowin forums</value></data>
+  <data name="St_CustomMenuDeskmodder"><value>Deskmodder.de</value></data>
+  <data name="St_CustomMenuShare"><value>Deel cleaner op GitHub</value></data>
+  <data name="St_CustomToggleFailed"><value>Schakelen mislukt: {0}</value></data>
+  <data name="St_CustomDeleteTitle"><value>“{0}” verwijderen?</value></data>
+  <data name="St_CustomDeleteMessage"><value>Dit verwijdert de aangepaste cleaner permanent.</value></data>
+  <data name="St_CustomDeleteConfirm"><value>Wissen</value></data>
+  <data name="St_CustomDeleteCancel"><value>Annuleren</value></data>
+  <data name="St_CustomRunning"><value>Uitvoeren {0}...</value></data>
+  <data name="St_CustomScriptError"><value>{0}: kon script niet lezen — {1}</value></data>
+  <data name="St_CustomCompleted"><value>{0}: completed successfully.</value></data>
+  <data name="St_CustomFailed"><value>{0}: mislukt (uitgang {1}).</value></data>
+  <data name="St_CustomEntryNone"><value>Geen items verwerkt</value></data>
+  <data name="St_CustomEntryOne"><value>1 vermelding · {0}</value></data>
+  <data name="St_CustomEntryMany"><value>{0} vermeldingen · {1}</value></data>
+  <data name="St_CustomEntryEnabled"><value>ingeschakeld</value></data>
+  <data name="St_CustomEntryDisabled"><value>Uitgeschakeld</value></data>
+
+  <!-- New Cleaner Dialog -->
+  <data name="DlgNewCleanerSave"><value>Opslaan</value></data>
+  <data name="DlgNewCleanerCancel"><value>Annuleren</value></data>
+  <data name="DlgNewCleanerTypeIni.Content"><value>Winapp2 vermelding (.ini)</value></data>
+  <data name="DlgNewCleanerTypePs1.Content"><value>PowerShell script (.ps1)</value></data>
+  <data name="DlgNewCleanerNameHeader"><value>Naam</value></data>
+  <data name="DlgNewCleanerNamePlaceholder"><value>Mijn Cleaner</value></data>
+  <data name="DlgNewCleanerAiPlaceholder"><value>Genereer met AI – beschrijf wat er moet worden opgeschoond (resultaten kunnen variëren)</value></data>
+  <data name="DlgNewCleanerGenerate.Content"><value>Genereren</value></data>
+  <data name="DlgNewCleanerGenerateBtn"><value>Genereren</value></data>
+  <data name="DlgNewCleanerContentLabel"><value>Inhoud</value></data>
+  <data name="DlgNewCleanerTest"><value>Test in Rule Lab</value></data>
+  <data name="DlgNewCleanerLoadTemplate.Content"><value>Sjabloon laden</value></data>
+  <data name="DlgNewCleanerTitleNew"><value>Nieuwe aangepaste cleaner</value></data>
+  <data name="DlgNewCleanerTitleEdit"><value>Bewerk — {0}</value></data>
+  <data name="DlgNewCleanerGenerating"><value>…</value></data>
+
+  <!-- ============================================================
+       AI EXPLAINER
+  ============================================================ -->
+  <data name="AI_NoKey"><value>Geen API-sleutel geconfigureerd voor geselecteerde aanbieder. Ga naar Instellingen → AI-uitleg om een toe te voegen.</value></data>
+  <data name="AI_ApiError"><value>{0} API-fout: {1}</value></data>
+  <data name="AI_NoResponse"><value>Geen reactie ontvangen.</value></data>
+  <data name="AI_NetworkError"><value>Kon {0} niet bereiken: {1}</value></data>
+  <data name="AI_NoKeyShort"><value>Geen API-sleutel geconfigureerd — ga naar Instellingen → AI-uitleg.</value></data>
+
+  <!-- ============================================================
+       TERMINAL / CLI
+  ============================================================ -->
+  <data name="TerminalPlaceholder.PlaceholderText"><value>Firefox opschonen  ·  Chrome analyseren  ·  hulp</value></data>
+  <data name="CLI_Welcome"><value>FluentCleaner Terminal online.</value></data>
+  <data name="CLI_Databases"><value>Databases: {0} actief — {1} gevonden vermeldingen</value></data>
+  <data name="CLI_HelpHint"><value>Typ ‘help’ voor opdrachten.</value></data>
+  <data name="CLI_Version"><value>  FluentCleaner {0}</value></data>
+  <data name="CLI_UnknownCommand"><value>  Onbekende opdracht ‘{0}’. Typ ‘help’.</value></data>
+  <data name="CLI_NoDrives"><value>  Geen schijven gevonden.</value></data>
+  <data name="CLI_ThemeUsage"><value>  Gebruik: thema donker | licht | systeem</value></data>
+  <data name="CLI_ThemeSet"><value>  Thema ingesteld op '{0}'.</value></data>
+  <data name="CLI_BackdropUsage"><value>  Toepassing: achtergrond van mica | acryl</value></data>
+  <data name="CLI_BackdropSet"><value>  Achtergrond ingesteld op ‘{0}’.</value></data>
+  <data name="CLI_NoMatch"><value>  Geen resultaten gevonden voor ‘{0}’.</value></data>
+  <data name="CLI_CleanEntry"><value>  {0}: {1} items · {2}</value></data>
+  <data name="CLI_CleanDone"><value>  Klaar — {0} items verwijderd · {1} vrijgemaakt.</value></data>
+  <data name="CLI_NothingToClean"><value>  Niets op te schonen.</value></data>
+  <data name="CLI_AnalyzeEntry"><value>  {0}: {1} bestanden · {2} register · {3}</value></data>
+  <data name="CLI_AnalyzeTotal"><value>  Totaal: {0} gevonden.</value></data>
+  <data name="CLI_NothingFound"><value>  Niets gevonden.</value></data>
+  <data name="CLI_ListEntries"><value>  — {0} vermeldingen.</value></data>
+  <data name="CLI_ListCategories"><value>  — {0} categorieën.</value></data>
+  <data name="CLI_AppxUsage"><value>  Gebruik: appx list | appx scan | appx remove &lt;naam&gt; | appx remove all</value></data>
+  <data name="CLI_AppxListStart"><value>  Lijst met alle geïnstalleerde AppX-pakketten...</value></data>
+  <data name="CLI_AppxNoPackages"><value>  Geen pakketten gevonden.</value></data>
+  <data name="CLI_AppxListDone"><value>  — {0} pakket(ten) geïnstalleerd. Gebruik ‘appx remove &lt;name&gt;’ om ze te verwijderen.</value></data>
+  <data name="CLI_AppxScanStart"><value>  Scannen geïnstalleerde pakketten...</value></data>
+  <data name="CLI_AppxNothingFound"><value>  Niets gevonden — het systeem lijkt in orde.</value></data>
+  <data name="CLI_AppxScanDone"><value>  — {0} pakket(ten) gevonden. Gebruik ‘appx remove &lt;name&gt;’ of ‘appx remove all’.</value></data>
+  <data name="CLI_AppxRemoveUsage"><value>  Gebruik: appx remove &lt;name&gt; | appx remove all</value></data>
+  <data name="CLI_AppxRemoveScanStart"><value>  Scannen naar geïnstalleerde pakketten...</value></data>
+  <data name="CLI_AppxNothingToRemove"><value>  Niets te verwijderen.</value></data>
+  <data name="CLI_AppxRemoving"><value>  Verwijderen {0}...</value></data>
+  <data name="CLI_AppxRemoveOk"><value>  OK  {0} verwijderd.</value></data>
+  <data name="CLI_AppxRemoveErr"><value>  ERR {0} — mislukt (is mogelijk niet geïnstalleerd of vereist beheerdersrechten).</value></data>
+  <data name="CLI_AppxRemoveDone"><value>  Klaar — {0} pakket(ten) verwijderd.</value></data>
+  <data name="CLI_AppxNothingRemoved"><value>  Niets verwijderd.</value></data>
+  <data name="CLI_AppxDisabled"><value>  Winappx-database is uitgeschakeld — schakel deze in via Instellingen.</value></data>
+  <data name="CLI_AppxNotFound"><value>  Winappx.ini niet gevonden — download het via Instellingen.</value></data>
+
+</root>

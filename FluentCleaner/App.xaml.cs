@@ -13,7 +13,39 @@ public partial class App : Application
 
     public App()
     {
+        //Language must be applied BEFORE InitializeComponent so WinUI reads it once at startup
+        try
+        {
+            var lang = AppSettings.Instance.Language;
+            if (!string.IsNullOrWhiteSpace(lang))
+                Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = lang;
+        }
+        catch { /* if resources broken, let app keep running in default language */ }
+
         InitializeComponent();
+
+        UnhandledException += (_, e) =>
+        {
+            e.Handled = true; //stop the app from dying silently(0xC000027B)
+            LogCrash(e.Exception);
+        };
+    }
+
+    //when the app blows up, dump it to crash.log so users can send it over.
+    //lives next to auto.log: %AppData%\FluentCleaner\crash.log
+    private static void LogCrash(Exception ex)
+    {
+        try
+        {
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "FluentCleaner", "crash.log");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.AppendAllText(path,
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}]\n{ex}\n{new string('-', 60)}\n\n");
+        }
+        catch { /* logging must never be the thing that crashes us */ }
     }
 
     //Entry point;load settings, build the window, wire everything up.
@@ -21,6 +53,10 @@ public partial class App : Application
     {
 
         AppSettings.Reload();
+
+        //force language for code-side strings (CLI, status messages, dialogs)
+        // XAML x:Uid strings always follow the Windows display language
+        ResourceService.SetLanguage(AppSettings.Instance.Language);
 
         // SilentRunner headless clean, no window; /SHUTDOWN shuts down after
         var cmdArgs = Environment.GetCommandLineArgs();
